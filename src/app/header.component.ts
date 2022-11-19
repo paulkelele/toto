@@ -1,16 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { materialModules } from './material';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, materialModules],
   template: `
-    <p>
-      header works!
-    </p>
+   <mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <span>My App</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button  aria-label="Example icon-button with menu icon">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </mat-toolbar-row>
+   </mat-toolbar>
+
   `,
-  styles: [
+  styles: [`
+  .example-spacer {
+  flex: 1 1 auto;
+}`
   ]
 })
 export class HeaderComponent implements OnInit {
