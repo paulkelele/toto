@@ -17,7 +17,8 @@ bootstrapApplication(AppComponent,{
     importProvidersFrom(
       RouterModule.forRoot(routes), 
       BrowserAnimationsModule,
-      HttpClientModule)  ]
+      HttpClientModule)
+    ]
 })
 
  
