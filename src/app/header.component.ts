@@ -9,7 +9,7 @@ import { materialModules } from './material';
   template: `
    <mat-toolbar color="primary">
     <mat-toolbar-row>
-      <span>My App</span>
+      <span>Logger</span>
       <span class="example-spacer"></span>
       <button mat-icon-button  aria-label="Example icon-button with menu icon">
         <mat-icon>menu</mat-icon>
