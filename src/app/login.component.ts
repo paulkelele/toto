@@ -43,13 +43,15 @@ declare const window: any;
  <div style="margin-bottom:5px;"> <button mat-raised-button color="primary" (click)="detec()" >table de log</button> </div>
  
  <div *ngIf="tabMessages.length>0">
+  <mat-card>
+    <mat-card-content> nom [ {{fileData.name}} ] -- taille[ {{fileData.size}} ]</mat-card-content>
+  </mat-card>
       <mat-form-field>
          <mat-label>Filter</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
       </mat-form-field>
         <table  mat-table   [dataSource]="dataSource" class="mat-elevation-z1" matSort>
-        
-        <ng-container matColumnDef="nom">
+         <ng-container matColumnDef="nom">
           <th mat-header-cell *matHeaderCellDef mat-sort-header="nom"> NOM </th>
           <td mat-cell *matCellDef="let element"> {{element.nom}} </td>
         </ng-container>
@@ -106,7 +108,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   filterSelectObj: any[] = [];
   project_dir: any = "";
   filterValues: any = {};
-
+  fileData:any;
 
   @ViewChild(MatPaginator, {static: false})
   set paginator(value: MatPaginator | undefined) {
@@ -170,10 +172,10 @@ ngAfterViewInit(): void {
       startIn: WellKnownDirectory[2],
     });
  
-    let fileData = await fileHandle.getFile();
-    console.log(fileData);
+     this.fileData = await fileHandle.getFile();
+    console.log(this.fileData);
     
-    let text = await fileData.text();
+    let text = await this.fileData.text();
     const byLineArray: string[] | undefined = text.toString().split('\n');
     await this.getTable(byLineArray).then((res)=>{
         this.dataSource = res as MatTableDataSource<Imessages>;
