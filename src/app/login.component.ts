@@ -79,7 +79,7 @@ declare const window: any;
       <td class="mat-cell" colspan="4">Aucune donnée correspondant au filtre "{{input.value}}"</td>
     </tr>
         </table>
-        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+        <mat-paginator [pageSizeOptions]="[1, 5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
       </div>
     </div>
   </div>
@@ -106,8 +106,10 @@ export class LoginComponent implements OnInit, AfterViewInit {
   filterSelectObj: any[] = [];
   project_dir: any = "";
   filterValues: any = {};
-  @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
-  @ViewChild(MatSort) sort: MatSort | undefined;
+  private paginator: MatPaginator;
+private sort: MatSort | undefined;
+  @ViewChild(MatPaginator, {static: false}) set matPaginator(value: MatPaginator) { this.paginator = value; };
+  @ViewChild(MatSort, {static: false}) set matSort(value: MatSort | undefined) {  this.sort = value};
 
   constructor() {
     this.filterSelectObj = [
@@ -150,7 +152,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
 
 ngAfterViewInit(): void {
-  this.dataSource.paginator = this.paginator;
+ 
 }
   async detec() {
     let [fileHandle] = await window.showOpenFilePicker({
@@ -174,8 +176,9 @@ ngAfterViewInit(): void {
         this.tabMessages = [...this.tabMessages, mes];
       });
       this.dataSource = new MatTableDataSource(this.tabMessages);
-      this.dataSource.sort = this.sort; 
-      console.log(this.sort);
+      // this.dataSource.paginator = this.paginator;
+      // this.dataSource.sort = this.sort; 
+      // console.log(this.sort);
       
     }
   
