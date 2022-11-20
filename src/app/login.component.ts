@@ -132,6 +132,7 @@ export class LoginComponent implements OnInit {
     // Called on Filter change
     filterChange(filter:any, event:any) {
        console.log(filter.columnProp);
+       
       this.filterValues[filter.columnProp] = event.target.value.trim().toLowerCase()
       this.dataSource.filter = JSON.stringify(this.filterValues)
     }
