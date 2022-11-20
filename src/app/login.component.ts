@@ -129,6 +129,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  
     // Called on Filter change
     filterChange(filter:any, event:any) {
        console.log(filter.columnProp);
