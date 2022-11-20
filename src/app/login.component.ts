@@ -171,12 +171,13 @@ ngAfterViewInit(): void {
     });
  
     let fileData = await fileHandle.getFile();
+    console.log(fileData);
+    
     let text = await fileData.text();
     const byLineArray: string[] | undefined = text.toString().split('\n');
     await this.getTable(byLineArray).then((res)=>{
         this.dataSource = res as MatTableDataSource<Imessages>;
-        this.dataSource._paginator = this.paginator;
-        console.log(this.dataSource);
+          
       })
   }
  
