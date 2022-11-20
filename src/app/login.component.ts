@@ -1,8 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTableDataSource } from "@angular/material/table";
 import { materialModules } from './material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 export interface Imessages {
   nom: string;
@@ -38,46 +40,48 @@ declare const window: any;
   <div style="display: flex;">
   <div style="width: 5%;"> </div>
   <div style="width: 95%;">
- <div style="margin-bottom:5px;"> <button mat-raised-button color="primary" (click)="detec()" >load table</button> </div>
+ <div style="margin-bottom:5px;"> <button mat-raised-button color="primary" (click)="detec()" >table de log</button> </div>
  
  <div *ngIf="tabMessages.length>0">
-   <mat-form-field *ngFor="let filter of filterSelectObj " style="margin-left: 15px;" >
-  <mat-label>Filter {{filter.name}}</mat-label>
-  <select matNativeControl name="{{filter.columnProp}}" >
-  <option value="">-- Select {{filter.name}} --</option>
-  <option [value]="item" *ngFor="let item of filter.options">{{item}}</option>
-  </select>
-</mat-form-field>
- </div>
+      <mat-form-field>
+         <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+      </mat-form-field>
+        <table  mat-table   [dataSource]="dataSource" class="mat-elevation-z1" matSort>
+        
+        <ng-container matColumnDef="nom">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="nom"> NOM </th>
+          <td mat-cell *matCellDef="let element"> {{element.nom}} </td>
+        </ng-container>
 
-  <table *ngIf="tabMessages.length>0" mat-table  mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-  <ng-container matColumnDef="nom">
-    <th mat-header-cell *matHeaderCellDef> NOM </th>
-    <td mat-cell *matCellDef="let element"> {{element.nom}} </td>
-  </ng-container>
+        <!-- Name Column -->
+        <ng-container matColumnDef="prenom">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="prenom"> PRENOM </th>
+          <td mat-cell *matCellDef="let element"> {{element.prenom}} </td>
+        </ng-container>
 
-  <!-- Name Column -->
-  <ng-container matColumnDef="prenom">
-    <th mat-header-cell *matHeaderCellDef> PRENOM </th>
-    <td mat-cell *matCellDef="let element"> {{element.prenom}} </td>
-  </ng-container>
+        <!-- Weight Column -->
+        <ng-container matColumnDef="age">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="age"> AGE </th>
+          <td mat-cell *matCellDef="let element"> {{element.age}} </td>
+        </ng-container>
 
-  <!-- Weight Column -->
-  <ng-container matColumnDef="age">
-    <th mat-header-cell *matHeaderCellDef> AGE </th>
-    <td mat-cell *matCellDef="let element"> {{element.age}} </td>
-  </ng-container>
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="commentaire">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="commentaire"> COMMENTAIRE </th>
+          <td mat-cell *matCellDef="let element"> {{element.commentaire}} </td>
+        </ng-container>
 
-  <!-- Symbol Column -->
-  <ng-container matColumnDef="commentaire">
-    <th mat-header-cell *matHeaderCellDef> COMMENTAIRE </th>
-    <td mat-cell *matCellDef="let element"> {{element.commentaire}} </td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
-  </div>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          <!-- Ligne affichée lorsqu'il n'y a pas de données correspondantes. -->
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="4">Aucune donnée correspondant au filtre "{{input.value}}"</td>
+    </tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -94,15 +98,16 @@ declare const window: any;
 }`
   ]
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, AfterViewInit {
 
   displayedColumns: string[] = ['nom', 'prenom', 'age', 'commentaire'];
   tabMessages: Array<Imessages> = new Array<Imessages>;
-  dataSource:any = new MatTableDataSource();
-  filterSelectObj:any[] = [];
+  dataSource: any = new MatTableDataSource();
+  filterSelectObj: any[] = [];
   project_dir: any = "";
-  filterValues:any = {};
-
+  filterValues: any = {};
+  @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
+  @ViewChild(MatSort) sort: MatSort | undefined;
 
   constructor() {
     this.filterSelectObj = [
@@ -124,27 +129,36 @@ export class LoginComponent implements OnInit {
         options: []
       }
     ]
-   }
+  }
 
   ngOnInit(): void {
+   
   }
- 
-    // Called on Filter change
-    filterChange(filter:any, event:any) {
-       console.log(filter.columnProp);
-       
-      this.filterValues[filter.columnProp] = event.target.value.trim().toLowerCase()
-      this.dataSource.filter = JSON.stringify(this.filterValues)
-    }
 
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  // Called on Filter change
+  filterChange(filter: any, event: any) {
+    this.filterValues[filter.columnProp] = event.target.value.trim().toLowerCase()
+    this.dataSource.filter = JSON.stringify(this.filterValues)
+  }
+
+ngAfterViewInit(): void {
+  this.dataSource.paginator = this.paginator;
+}
   async detec() {
     let [fileHandle] = await window.showOpenFilePicker({
-      multiple:false,
-      id:'foo',
+      multiple: false,
+      id: 'foo',
       startIn: WellKnownDirectory[2],
     });
-    console.log(fileHandle);
-    
+ 
     let fileData = await fileHandle.getFile();
     let text = await fileData.text();
     const byLineArray: string[] | undefined = text.toString().split('\n');
@@ -152,17 +166,19 @@ export class LoginComponent implements OnInit {
       this.tabMessages = [];
       byLineArray.forEach(element => {
         let mes = {} as Imessages;
-        console.log(element);
         let e: string[] = element.split('|');
         mes.nom = e[0];
         mes.prenom = e[1]
         mes.age = e[2];
         mes.commentaire = e[3];
-         this.tabMessages = [...this.tabMessages, mes];
+        this.tabMessages = [...this.tabMessages, mes];
       });
       this.dataSource = new MatTableDataSource(this.tabMessages);
-      this.dataSource.filterPredicate 
+      this.dataSource.sort = this.sort; 
+      console.log(this.sort);
+      
     }
+  
   }
- 
+
 }
