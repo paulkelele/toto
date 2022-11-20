@@ -84,8 +84,8 @@ declare const window: any;
       <td class="mat-cell" colspan="4">Aucune donnée correspondant au filtre "{{input.value}}"</td>
     </tr>
         </table>
-        <mat-paginator  [pageSizeOptions]="[1, 5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
-      </div>
+          <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>   
+         </div>
     </div>
   </div>
 </div>
@@ -107,7 +107,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   displayedColumns: string[] = ['nom', 'prenom', 'age', 'commentaire'];
   tabMessages: Array<Imessages> = new Array<Imessages>;
-  dataSource: any = new MatTableDataSource();
+  dataSource: any ;
   filterSelectObj: any[] = [];
   project_dir: any = "";
   filterValues: any = {};
@@ -154,9 +154,9 @@ export class LoginComponent implements OnInit, AfterViewInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+    // if (this.dataSource.paginator) {
+    //   this.dataSource.paginator.firstPage();
+    // }
   }
 
   // Called on Filter change
@@ -184,6 +184,8 @@ ngAfterViewInit(): void {
     this.numberRows = byLineArray?.length;
     await this.getTable(byLineArray).then((res)=>{
         this.dataSource = res as MatTableDataSource<Imessages>;
+        this.dataSource.paginator = this.paginator;
+          // this.paginator.?_intl.itemsPerPageLabel = "Entrées par page" ;
       })
   }
  
