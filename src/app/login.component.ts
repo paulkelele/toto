@@ -79,7 +79,7 @@ declare const window: any;
       <td class="mat-cell" colspan="4">Aucune donnée correspondant au filtre "{{input.value}}"</td>
     </tr>
         </table>
-        <mat-paginator [pageSizeOptions]="[1, 5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+        <mat-paginator  [pageSizeOptions]="[1, 5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
       </div>
     </div>
   </div>
@@ -106,10 +106,16 @@ export class LoginComponent implements OnInit, AfterViewInit {
   filterSelectObj: any[] = [];
   project_dir: any = "";
   filterValues: any = {};
-  private paginator: MatPaginator;
-private sort: MatSort | undefined;
-  @ViewChild(MatPaginator, {static: false}) set matPaginator(value: MatPaginator) { this.paginator = value; };
-  @ViewChild(MatSort, {static: false}) set matSort(value: MatSort | undefined) {  this.sort = value};
+
+
+  @ViewChild(MatPaginator, {static: false})
+  set paginator(value: MatPaginator | undefined) {
+    this.dataSource.paginator = value;
+  }
+  @ViewChild(MatSort, {static: false}) 
+  set sort(value: MatSort | undefined) { 
+    this.dataSource.sort = value
+  };
 
   constructor() {
     this.filterSelectObj = [
@@ -134,8 +140,10 @@ private sort: MatSort | undefined;
   }
 
   ngOnInit(): void {
-   
+    
   }
+ 
+  
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -152,7 +160,8 @@ private sort: MatSort | undefined;
   }
 
 ngAfterViewInit(): void {
- 
+  
+
 }
   async detec() {
     let [fileHandle] = await window.showOpenFilePicker({
@@ -164,24 +173,33 @@ ngAfterViewInit(): void {
     let fileData = await fileHandle.getFile();
     let text = await fileData.text();
     const byLineArray: string[] | undefined = text.toString().split('\n');
-    if (byLineArray) {
-      this.tabMessages = [];
-      byLineArray.forEach(element => {
-        let mes = {} as Imessages;
-        let e: string[] = element.split('|');
-        mes.nom = e[0];
-        mes.prenom = e[1]
-        mes.age = e[2];
-        mes.commentaire = e[3];
-        this.tabMessages = [...this.tabMessages, mes];
-      });
-      this.dataSource = new MatTableDataSource(this.tabMessages);
-      // this.dataSource.paginator = this.paginator;
-      // this.dataSource.sort = this.sort; 
-      // console.log(this.sort);
-      
-    }
-  
+    await this.getTable(byLineArray).then((res)=>{
+        this.dataSource = res as MatTableDataSource<Imessages>;
+        this.dataSource._paginator = this.paginator;
+        console.log(this.dataSource);
+        
+      })
+   
+    
+  }
+ 
+  getTable(tab: string[] | undefined): Promise<MatTableDataSource<Imessages>> {
+    return new Promise((resolve, reject)=>{
+      if(tab){
+         this.tabMessages = [];
+          tab.forEach(element => {
+            let mes = {} as Imessages;
+            let e: string[] = element.split('|');
+            mes.nom = e[0];
+            mes.prenom = e[1]
+            mes.age = e[2];
+            mes.commentaire = e[3];
+            this.tabMessages = [...this.tabMessages, mes];
+          });
+         resolve(new MatTableDataSource(this.tabMessages))
+        }
+      reject(new Error('impossible de retourner la table'));
+    })
   }
 
 }
