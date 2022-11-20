@@ -40,11 +40,14 @@ declare const window: any;
   <div style="display: flex;">
   <div style="width: 5%;"> </div>
   <div style="width: 95%;">
- <div style="margin-bottom:5px;"> <button mat-raised-button color="primary" (click)="detec()" >table de log</button> </div>
+ <div style="margin-bottom:5px;"> <button mat-raised-button color="primary" (click)="detec()" >Chargement d'un fichier de log</button> </div>
  
  <div *ngIf="tabMessages.length>0">
   <mat-card>
-    <mat-card-content> nom [ {{fileData.name}} ] -- taille[ {{fileData.size}} ]</mat-card-content>
+    <mat-card-content> 
+      nom [ {{fileData.name}} ] 
+      -- taille [ {{fileData.size}} ] 
+      -- nombre d'enregistrements [ {{this.numberRows}} ]</mat-card-content>
   </mat-card>
       <mat-form-field>
          <mat-label>Filter</mat-label>
@@ -109,6 +112,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   project_dir: any = "";
   filterValues: any = {};
   fileData:any;
+  numberRows:number |undefined ;
 
   @ViewChild(MatPaginator, {static: false})
   set paginator(value: MatPaginator | undefined) {
@@ -177,9 +181,9 @@ ngAfterViewInit(): void {
     
     let text = await this.fileData.text();
     const byLineArray: string[] | undefined = text.toString().split('\n');
+    this.numberRows = byLineArray?.length;
     await this.getTable(byLineArray).then((res)=>{
         this.dataSource = res as MatTableDataSource<Imessages>;
-          
       })
   }
  
