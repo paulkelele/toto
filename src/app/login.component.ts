@@ -177,13 +177,12 @@ ngAfterViewInit(): void {
         this.dataSource = res as MatTableDataSource<Imessages>;
         this.dataSource._paginator = this.paginator;
         console.log(this.dataSource);
-        
       })
-   
-    
   }
  
-  getTable(tab: string[] | undefined): Promise<MatTableDataSource<Imessages>> {
+
+  // parse table objets de types Imessages dans un MatTableDataSource
+ private getTable(tab: string[] | undefined): Promise<MatTableDataSource<Imessages>> {
     return new Promise((resolve, reject)=>{
       if(tab){
          this.tabMessages = [];
