@@ -39,6 +39,7 @@ declare const window: any;
   ]
 })
 export class LoginComponent implements OnInit, AfterViewInit {
+
   tabs:string[]=[];
   selected = new FormControl(0);
   
@@ -90,10 +91,11 @@ ngAfterViewInit(): void {
       fileReader.readAsText(file);
       fileReader.onload = () => {
         const byLineArray: string[] | undefined= fileReader.result?.toString().split('\n'); 
+       
         if(byLineArray ){
-          this.byLineArray = byLineArray;
+         this.byLineArray = byLineArray;
         }         
-      console.log(byLineArray);
+     
       };
       fileReader.onerror = () => {
    }
