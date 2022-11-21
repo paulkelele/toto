@@ -1,16 +1,31 @@
 import { Component, OnInit, AfterViewInit, ViewChild} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTableDataSource } from "@angular/material/table";
 import { materialModules } from './material';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { TableComponent } from './table.component';
 
 export interface Imessages {
-  nom: string;
-  prenom: string,
-  age: string,
-  commentaire: string
+    date:string,
+    sessionId:string,
+    id:string,
+    parent_id:string,
+    nb_sub_records:string,
+    configuration_name:string,
+    server_name:string,
+    user_name:string,
+    module:string,
+    sub_module:string,
+    object_type:string,
+    object_name:string,
+    field_name:string,
+    old_value:string,
+    new_value:string,
+    action_type:string,
+    status:string,
+    message:string
 }
 
 export enum WellKnownDirectory {
@@ -28,69 +43,8 @@ declare const window: any;
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, materialModules, ReactiveFormsModule, FormsModule],
-  template: `
- 
-  <!-- <input  type="file"  (change)="load($event)"  /> -->
- <div class="scafold">
-  <div style="width: 100%;"> Lorem ipsum dolor sit amet consectetur adipisicing elit.
-  Tenetur consectetur aliquid voluptatum sunt neque corporis non praesentium, 
-  officia voluptates magnam nulla, asperiores voluptas maxime quae voluptate ratione quia exercitationem accusantium?
-  </div>
-  <div style="display: flex;">
-  <div style="width: 5%;"> </div>
-  <div style="width: 95%;">
- <div style="margin-bottom:5px;"> <button mat-raised-button color="primary" (click)="detec()" >Chargement d'un fichier de log</button> </div>
- 
- <div *ngIf="tabMessages.length>0">
-  <mat-card>
-    <mat-card-content> 
-      nom [ {{fileData.name}} ] 
-      -- taille [ {{fileData.size}} ] 
-      -- nombre d'enregistrements [ {{this.numberRows}} ]</mat-card-content>
-  </mat-card>
-      <mat-form-field>
-         <mat-label>Filter</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
-      </mat-form-field>
-        <table  mat-table   [dataSource]="dataSource" class="mat-elevation-z1" matSort>
-         <ng-container matColumnDef="nom">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header="nom"> NOM </th>
-          <td mat-cell *matCellDef="let element"> {{element.nom}} </td>
-        </ng-container>
-
-        <!-- Name Column -->
-        <ng-container matColumnDef="prenom">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header="prenom"> PRENOM </th>
-          <td mat-cell *matCellDef="let element"> {{element.prenom}} </td>
-        </ng-container>
-
-        <!-- Weight Column -->
-        <ng-container matColumnDef="age">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header="age"> AGE </th>
-          <td mat-cell *matCellDef="let element"> {{element.age}} </td>
-        </ng-container>
-
-        <!-- Symbol Column -->
-        <ng-container matColumnDef="commentaire">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header="commentaire"> COMMENTAIRE </th>
-          <td mat-cell *matCellDef="let element"> {{element.commentaire}} </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          <!-- Ligne affichée lorsqu'il n'y a pas de données correspondantes. -->
-    <tr class="mat-row" *matNoDataRow>
-      <td class="mat-cell" colspan="4">Aucune donnée correspondant au filtre "{{input.value}}"</td>
-    </tr>
-        </table>
-          <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>   
-         </div>
-    </div>
-  </div>
-</div>
-
-  `,
+  imports: [CommonModule, materialModules, ReactiveFormsModule, FormsModule, TableComponent],
+  templateUrl:'login.component.html',
   styles: [`
 
 .scafold{
@@ -105,7 +59,29 @@ declare const window: any;
 })
 export class LoginComponent implements OnInit, AfterViewInit {
 
+  tabs:string[]=[];
+  selected = new FormControl(0);
   displayedColumns: string[] = ['nom', 'prenom', 'age', 'commentaire'];
+  colonnes:string[]=[
+    "date",
+    "sessionId",
+    "id",
+    "parent_id",
+    "nb_sub_records",
+    "configuration_name",
+    "server_name",
+    "user_name",
+    "module",
+    "sub_module",
+    "object_type",
+    "object_name",
+    "field_name",
+    "old_value",
+    "new_value",
+    "action_type",
+    "status",
+    "message"
+  ]
   tabMessages: Array<Imessages> = new Array<Imessages>;
   dataSource: any ;
   filterSelectObj: any[] = [];
@@ -124,25 +100,34 @@ export class LoginComponent implements OnInit, AfterViewInit {
   };
 
   constructor() {
-    this.filterSelectObj = [
-      {
-        name: this.displayedColumns[0].toUpperCase(),
-        columnProp: this.displayedColumns[0],
-        options: []
-      }, {
-        name: this.displayedColumns[1].toUpperCase(),
-        columnProp: this.displayedColumns[1],
-        options: []
-      }, {
-        name: this.displayedColumns[2].toUpperCase(),
-        columnProp: this.displayedColumns[2],
-        options: []
-      }, {
-        name: this.displayedColumns[3].toUpperCase(),
-        columnProp: this.displayedColumns[3],
+    // this.filterSelectObj = [
+    //   {
+    //     name: this.displayedColumns[0].toUpperCase(),
+    //     columnProp: this.displayedColumns[0],
+    //     options: []
+    //   }, {
+    //     name: this.displayedColumns[1].toUpperCase(),
+    //     columnProp: this.displayedColumns[1],
+    //     options: []
+    //   }, {
+    //     name: this.displayedColumns[2].toUpperCase(),
+    //     columnProp: this.displayedColumns[2],
+    //     options: []
+    //   }, {
+    //     name: this.displayedColumns[3].toUpperCase(),
+    //     columnProp: this.displayedColumns[3],
+    //     options: []
+    //   }
+    // ]
+    for (let index = 0; index < 18; index++) {
+       const obj={
+        name: this.colonnes[index].toUpperCase(),
+        columnProp: this.colonnes[index],
         options: []
       }
-    ]
+      this.filterSelectObj=[...this.filterSelectObj,obj]
+      
+    }
   }
 
   ngOnInit(): void {
@@ -178,13 +163,13 @@ ngAfterViewInit(): void {
  
      this.fileData = await fileHandle.getFile();
     console.log(this.fileData);
-    
+     this.tabs.push(this.fileData.name)
     let text = await this.fileData.text();
     const byLineArray: string[] | undefined = text.toString().split('\n');
     this.numberRows = byLineArray?.length;
     await this.getTable(byLineArray).then((res)=>{
         this.dataSource = res as MatTableDataSource<Imessages>;
-        this.dataSource.paginator = this.paginator;
+        // this.dataSource.paginator = this.paginator;
           // this.paginator.?_intl.itemsPerPageLabel = "Entrées par page" ;
       })
   }
@@ -198,10 +183,24 @@ ngAfterViewInit(): void {
           tab.forEach(element => {
             let mes = {} as Imessages;
             let e: string[] = element.split('|');
-            mes.nom = e[0];
-            mes.prenom = e[1]
-            mes.age = e[2];
-            mes.commentaire = e[3];
+            mes.date = e[0];
+            mes.sessionId = e[1]
+            mes.id = e[2];
+            mes.parent_id = e[3];
+            mes.nb_sub_records = e[4];
+            mes.configuration_name = e[5];
+            mes.server_name = e[6];
+            mes.user_name = e[7];
+            mes.module = e[8];
+            mes.sub_module = e[9];
+            mes.object_type = e[10];
+            mes.object_name = e[11];
+            mes.field_name = e[12];
+            mes.old_value = e[13];
+            mes.new_value = e[14];
+            mes.action_type = e[15];
+            mes.status = e[16];
+            mes.message = e[17];
             this.tabMessages = [...this.tabMessages, mes];
           });
          resolve(new MatTableDataSource(this.tabMessages))

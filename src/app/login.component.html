@@ -1,0 +1,26 @@
+<!-- <input  type="file"  (change)="load($event)"  /> -->
+<div class="scafold">
+    <div style="width: 100%;"> Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        Tenetur consectetur aliquid voluptatum sunt neque corporis non praesentium,
+        officia voluptates magnam nulla, asperiores voluptas maxime quae voluptate ratione quia exercitationem
+        accusantium?
+    </div>
+    <div style="display: flex;">
+        <div style="width: 5%;"> </div>
+        <div style="width: 95%;">
+            <div style="margin-bottom:5px;"> <button mat-raised-button color="primary" (click)="detec()">Chargement d'un
+                    fichier de log</button> </div>
+
+            <div *ngIf="tabMessages.length>0">
+                <mat-tab-group>
+                    <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab">
+
+                <app-table></app-table>
+            </mat-tab>
+
+        </mat-tab-group>
+
+            </div>
+        </div>
+    </div>
+</div>
