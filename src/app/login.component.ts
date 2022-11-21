@@ -80,30 +80,16 @@ ngAfterViewInit(): void {
   console.log(event);
     const file:File = event.target.files[0];
     if(file){
-      if (file.size === 0) return;
-     console.log(file.name);
-     
+      if (file.size === 0){
+        if(this.input)this.input.nativeElement.value = "";
+        return;
+      }
        this.tabs.push(file.name);
-         this.selected.setValue(this.tabs.length - 1);
-
-      // await file.text().then((res)=>{
-       
-      //   // this.byLineArray = res.toString().split('\n'); 
-      // }).then(()=>{
-        
-      // })
-      // quand on charge un fichier, on passe directement à sa vue 
-     
-  //     let fileReader: FileReader = new FileReader();
-  //     fileReader.readAsText(file);
-  //     fileReader.onload = () => {
-  //       const byLineArray: string[] | undefined= fileReader.result?.toString().split('\n'); 
-  //       if(byLineArray){
-  //        this.byLineArray = byLineArray;
-  //       }         
-  //     };
-  //     fileReader.onerror = () => {
-  //  }
+       this.selected.setValue(this.tabs.length - 1);
+      //  await file.text().then((res)=>{
+      //   this.byLineArray = res.toString().split('\n'); 
+      // });
+    
   }
 }
   removeTab(index: number) {

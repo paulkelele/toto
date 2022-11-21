@@ -10,7 +10,6 @@
         <div style="width: 95%;">
             <div style="margin-bottom:5px;"> 
                 <input type="file" #in (change)="load($event)"></div>
-            
                 <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
                     <mat-tab  *ngFor="let tab of tabs; let index = index"> 
                          <ng-template mat-tab-label>
