@@ -15,7 +15,7 @@ if (environment.production) {
 bootstrapApplication(AppComponent,{
   providers:[
     importProvidersFrom(
-      RouterModule.forRoot(routes), 
+      RouterModule.forRoot(routes,{useHash:true}), 
       BrowserAnimationsModule,
       HttpClientModule)
     ]

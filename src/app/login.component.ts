@@ -107,27 +107,47 @@ ngAfterViewInit(): void {
   
 
 }
-  async detec() {
-    this.byLineArray = [];
-    let [fileHandle] = await window.showOpenFilePicker({
-      multiple: false,
-      id: 'foo',
-      startIn: WellKnownDirectory[2],
-    });
+  // async detec() {
+  //   this.byLineArray = [];
+  //   let [fileHandle] = await window.showOpenFilePicker({
+  //     multiple: false,
+  //     id: 'foo',
+  //     startIn: WellKnownDirectory[2],
+  //   });
  
-     this.fileData = await fileHandle.getFile();
-    console.log(this.fileData);
-     this.tabs.push(this.fileData.name);
-    // quand on charge un fichier on passe directement à sa vue 
-     this.selected.setValue(this.tabs.length - 1);
-    let text = await this.fileData.text();
-    this.byLineArray  = text.toString().split('\n');
-    console.log(this.tabs);
+  //    this.fileData = await fileHandle.getFile();
+  //   console.log(this.fileData);
+  //    this.tabs.push(this.fileData.name);
+  //   // quand on charge un fichier on passe directement à sa vue 
+  //    this.selected.setValue(this.tabs.length - 1);
+  //   let text = await this.fileData.text();
+  //   this.byLineArray  = text.toString().split('\n');
+  //   console.log(this.tabs);
     
-  }
+  // }
  
-
-
+  async load(event: any) {
+  this.byLineArray = [];
+  console.log(event);
+    const file:File = event.target.files[0];
+    if(file){
+      if (file.size === 0) return;
+      this.tabs.push(file.name);
+      let fileReader: FileReader = new FileReader();
+      fileReader.readAsText(file);
+      fileReader.onload = () => {
+        const byLineArray: string[] | undefined= fileReader.result?.toString().split('\n'); 
+        console.log(byLineArray);
+        if(byLineArray ){
+         this.byLineArray = byLineArray;
+        }         
+        console.log(this.tabMessages);
+     
+      };
+      fileReader.onerror = () => {
+   }
+  }
+}
   removeTab(index: number) {
     this.tabs.splice(index, 1);
   }

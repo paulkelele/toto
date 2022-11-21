@@ -34,7 +34,7 @@ export interface Imessages {
   template: `
   <mat-form-field>
                     <mat-label>Filter</mat-label>
-                    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+                    <input matInput (keyup)="applyFilter($event)" placeholder="{{byLineArray?.length}}" #input>
                 </mat-form-field>
                 
                 <table mat-table [dataSource]="dataSource" class="mat-elevation-z1" matSort>
@@ -155,6 +155,7 @@ export interface Imessages {
                         <td class="mat-cell" colspan="4">Aucune donnée correspondant au filtre "{{input.value}}"</td>
                     </tr>
                 </table>
+               
                 <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
   `,
   styles: [
@@ -212,6 +213,8 @@ dataSource:any;
  
  async tt(arr:string[] | undefined ){
       await this.getTable(arr).then((res)=>{
+        console.log(res);
+        
         this.dataSource = new MatTableDataSource(res as Imessages[]);
     })
  }
