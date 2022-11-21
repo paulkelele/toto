@@ -37,6 +37,7 @@ export interface Imessages {
                     <input matInput (keyup)="applyFilter($event)"   #input>
                 </mat-form-field>
                 <div>{{name}}</div>
+                <div>{{byLineArray}}</div>
                 <table mat-table [dataSource]="dataSource" class="mat-elevation-z1" matSort>
                     <ng-container matColumnDef="date">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header="date"> date </th>
