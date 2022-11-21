@@ -61,7 +61,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   tabs:string[]=[];
   selected = new FormControl(0);
-  displayedColumns: string[] = ['nom', 'prenom', 'age', 'commentaire'];
   colonnes:string[]=[
     "date",
     "sessionId",
@@ -100,25 +99,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
   };
 
   constructor() {
-    // this.filterSelectObj = [
-    //   {
-    //     name: this.displayedColumns[0].toUpperCase(),
-    //     columnProp: this.displayedColumns[0],
-    //     options: []
-    //   }, {
-    //     name: this.displayedColumns[1].toUpperCase(),
-    //     columnProp: this.displayedColumns[1],
-    //     options: []
-    //   }, {
-    //     name: this.displayedColumns[2].toUpperCase(),
-    //     columnProp: this.displayedColumns[2],
-    //     options: []
-    //   }, {
-    //     name: this.displayedColumns[3].toUpperCase(),
-    //     columnProp: this.displayedColumns[3],
-    //     options: []
-    //   }
-    // ]
     for (let index = 0; index < 18; index++) {
        const obj={
         name: this.colonnes[index].toUpperCase(),
@@ -126,7 +106,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
         options: []
       }
       this.filterSelectObj=[...this.filterSelectObj,obj]
-      
     }
   }
 
