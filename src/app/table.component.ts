@@ -34,7 +34,7 @@ export interface Imessages {
   template: `
   <mat-form-field>
                     <mat-label>Filter</mat-label>
-                    <input matInput (keyup)="applyFilter($event)" placeholder="{{byLineArray?.length}}" #input>
+                    <input matInput (keyup)="applyFilter($event)"   #input>
                 </mat-form-field>
                 <div>{{name}}</div>
                 <table mat-table [dataSource]="dataSource" class="mat-elevation-z1" matSort>
@@ -183,7 +183,7 @@ export class TableComponent implements OnInit {
         "message"
       ] 
   
- @Input('byLineArray') byLineArray: string[] | undefined ;
+//  @Input('byLineArray') byLineArray: string[] | undefined ;
  @Input('name') name: any; 
 
 
@@ -202,8 +202,8 @@ dataSource:any;
  }
 
  ngOnInit(): void {
-    console.log(this.byLineArray);
-    this.tt(this.byLineArray)
+    // console.log(this.byLineArray);
+    // this.tt(this.byLineArray)
     // this.dataSource = this.tabMessages as MatTableDataSource<Imessages>;
  }
  applyFilter(event: Event) {

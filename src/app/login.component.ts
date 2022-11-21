@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild} from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTableDataSource } from "@angular/material/table";
@@ -39,9 +39,9 @@ declare const window: any;
   ]
 })
 export class LoginComponent implements OnInit, AfterViewInit {
-
+  @ViewChild('in')  input: ElementRef | undefined;
   tabs:string[]=[];
-  selected = new FormControl(0);
+   selected = new FormControl(0);
   
   // tabMessages: Array<Imessages> = new Array<Imessages>;
   dataSource: any ;
@@ -73,35 +73,42 @@ export class LoginComponent implements OnInit, AfterViewInit {
  
 
 ngAfterViewInit(): void {
-  
-
 }
   
- 
   async load(event: any) {
   this.byLineArray = [];
   console.log(event);
     const file:File = event.target.files[0];
     if(file){
       if (file.size === 0) return;
-      this.tabs.push(file.name);
-      // quand on charge un fichier, on passe directement à sa vue 
-      this.selected.setValue(this.tabs.length - 1);
-      let fileReader: FileReader = new FileReader();
-      fileReader.readAsText(file);
-      fileReader.onload = () => {
-        const byLineArray: string[] | undefined= fileReader.result?.toString().split('\n'); 
-       
-        if(byLineArray ){
-         this.byLineArray = byLineArray;
-        }         
+     console.log(file.name);
      
-      };
-      fileReader.onerror = () => {
-   }
+       this.tabs.push(file.name);
+         this.selected.setValue(this.tabs.length - 1);
+
+      // await file.text().then((res)=>{
+       
+      //   // this.byLineArray = res.toString().split('\n'); 
+      // }).then(()=>{
+        
+      // })
+      // quand on charge un fichier, on passe directement à sa vue 
+     
+  //     let fileReader: FileReader = new FileReader();
+  //     fileReader.readAsText(file);
+  //     fileReader.onload = () => {
+  //       const byLineArray: string[] | undefined= fileReader.result?.toString().split('\n'); 
+  //       if(byLineArray){
+  //        this.byLineArray = byLineArray;
+  //       }         
+  //     };
+  //     fileReader.onerror = () => {
+  //  }
   }
 }
   removeTab(index: number) {
     this.tabs.splice(index, 1);
+    if(this.input)
+     this.input.nativeElement.value = "";
   }
 }
