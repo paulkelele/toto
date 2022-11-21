@@ -13,8 +13,12 @@
 
             <div *ngIf="tabMessages.length>0">
                 <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
-                    <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab+' X'" >
-                                <app-table [dataSource]="dataSource"   ></app-table>
+                    <mat-tab dynamicHeight *ngFor="let tab of tabs; let index = index"   > 
+                        <ng-template mat-tab-label  >
+                           {{tab}}
+                            <mat-icon (click)="removeTab(index)" style="margin-left: 3px;" >close</mat-icon>
+                        </ng-template>
+                          <app-table [dataSource]="dataSource"   ></app-table>
                     </mat-tab>
                 </mat-tab-group>
             </div>
