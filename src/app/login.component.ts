@@ -91,7 +91,6 @@ ngAfterViewInit(): void {
        await file.text().then((res)=>{
         this.tabs2[1].push(res)
         // this.byLineArray = res.toString().split('\n'); 
-        console.table(this.tabs2);
         
       });
     

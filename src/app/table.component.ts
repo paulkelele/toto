@@ -183,7 +183,7 @@ export class TableComponent implements OnInit, AfterContentInit,AfterViewInit,Af
         "message"
       ] 
   
-  @Input('byLineArray') byLineArray: string  | undefined ;
+  @Input('byLineArray') byLineArray: string   | undefined ;
  @Input('name') name: any; 
 
 
@@ -204,11 +204,13 @@ dataSource:any;
 
  ngOnInit(): void {
      if(this.byLineArray){
-          console.log("XXXXXXXXXXXXx ",this.byLineArray);
-        // this.byLineArray.forEach(element => {
+        console.log("fffffffffffffffffffffffff");
+        
+        console.log("XXXXXXXXXXXXx ",this.byLineArray);
+         // this.byLineArray.forEach(element => {
         //     console.log(element)
         // });
-        // this.tt(this.byLineArray );
+        //   this.tt(this.byLineArray );
      }
        
     // this.dataSource = this.tabMessages as MatTableDataSource<Imessages>;
@@ -218,22 +220,22 @@ dataSource:any;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
  ngAfterContentInit(): void {
-    if(this.byLineArray){
-          console.log("XXXXXXXXXXXXx ",this.byLineArray);
-        // this.byLineArray.forEach(element => {
-        //     console.log(element)
-        // });
-        // this.tt(this.byLineArray );
-     }
+    // if(this.byLineArray){
+    //       console.log("XXXXXXXXXXXXx ",this.byLineArray);
+    //     // this.byLineArray.forEach(element => {
+    //     //     console.log(element)
+    //     // });
+    //     // this.tt(this.byLineArray );
+    //  }
  }
  ngAfterViewInit(): void {
-    if(this.byLineArray){
-          console.log("XXXXXXXXXXXXx ",this.byLineArray);
-        // this.byLineArray.forEach(element => {
-        //     console.log(element)
-        // });
-        // this.tt(this.byLineArray );
-     }
+    // if(this.byLineArray){
+    //       console.log("XXXXXXXXXXXXx ",this.byLineArray);
+    //     // this.byLineArray.forEach(element => {
+    //     //     console.log(element)
+    //     // });
+    //     // this.tt(this.byLineArray );
+    //  }
  
  }
 
@@ -280,13 +282,13 @@ dataSource:any;
     })
   }
   ngAfterViewChecked(): void {
-    if(this.byLineArray){
-          console.log("XXXXXXXXXXXXx ",this.byLineArray);
-        // this.byLineArray.forEach(element => {
-        //     console.log("caaaaaaaaaaaaa ",element)
-        // });
-         this.tt(this.byLineArray.split('\n') );
-     }
+    // if(this.byLineArray){
+    //       console.log("XXXXXXXXXXXXx ",this.byLineArray);
+    //     // this.byLineArray.forEach(element => {
+    //     //     console.log("caaaaaaaaaaaaa ",element)
+    //     // });
+    //     //  this.tt(this.byLineArray.split('\n') );
+    //  }
   }
 
 }
