@@ -36,7 +36,7 @@ export interface Imessages {
                     <mat-label>Filter</mat-label>
                     <input matInput (keyup)="applyFilter($event)" placeholder="{{byLineArray?.length}}" #input>
                 </mat-form-field>
-                
+                <div>{{name}}</div>
                 <table mat-table [dataSource]="dataSource" class="mat-elevation-z1" matSort>
                     <ng-container matColumnDef="date">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header="date"> date </th>
@@ -184,12 +184,13 @@ export class TableComponent implements OnInit {
       ] 
   
  @Input('byLineArray') byLineArray: string[] | undefined ;
-  
+ @Input('name') name: any; 
+
+
  filterSelectObj: any[] = [];
 dataSource:any;
 
  constructor(){
-    
     for (let index = 0; index < 18; index++) {
         const obj={
          name: this.colonnes[index].toUpperCase(),
@@ -198,7 +199,6 @@ dataSource:any;
        }
        this.filterSelectObj=[...this.filterSelectObj,obj];
      }
-    
  }
 
  ngOnInit(): void {
@@ -244,7 +244,7 @@ dataSource:any;
             mes.action_type = e[15];
             mes.status = e[16];
             mes.message = e[17];
-             tabMessages = [...tabMessages, mes];
+            tabMessages = [...tabMessages, mes];
           });
           console.log(tabMessages);
          resolve(tabMessages)

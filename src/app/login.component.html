@@ -10,18 +10,21 @@
         <div style="width: 95%;">
             <div style="margin-bottom:5px;"> 
                 <input type="file" (change)="load($event)"></div>
-
-            <div *ngIf="byLineArray && byLineArray.length > 0">
+            <!-- <div *ngIf="byLineArray && byLineArray.length > 0"> -->
                 <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
-                    <mat-tab dynamicHeight *ngFor="let tab of tabs; let index = index"   > 
-                         <ng-template mat-tab-label  >
+                    <mat-tab  *ngFor="let tab of tabs; let index = index"> 
+                         <ng-template mat-tab-label>
                            {{tab}}
-                            <mat-icon (click)="removeTab(index)" style="margin-left: 3px;" >close</mat-icon>
+                            <mat-icon (click)="removeTab(index)" style="margin-left: 3px;">close</mat-icon>
                         </ng-template>
-                          <app-table  [byLineArray]="byLineArray"></app-table>
+                        <ng-container>
+                             
+                          <app-table [name]=tab [byLineArray]="byLineArray"></app-table>
+                        </ng-container>
                     </mat-tab>
                 </mat-tab-group>
-            </div>
+                 
+            <!-- </div> -->
         </div>
     </div>
 </div>
