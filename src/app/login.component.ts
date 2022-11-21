@@ -41,6 +41,8 @@ declare const window: any;
 export class LoginComponent implements OnInit, AfterViewInit {
   @ViewChild('in')  input: ElementRef | undefined;
   tabs:string[]=[];
+  tabs2:string[][]=[[],[]];
+
    selected = new FormControl(0);
   
   // tabMessages: Array<Imessages> = new Array<Imessages>;
@@ -84,8 +86,8 @@ ngAfterViewInit(): void {
         if(this.input)this.input.nativeElement.value = "";
         return;
       }
-       this.tabs.push(file.name);
-       this.selected.setValue(this.tabs.length - 1);
+       this.tabs2[0].push(file.name);
+       this.selected.setValue(this.tabs2[0].length - 1);
       //  await file.text().then((res)=>{
       //   this.byLineArray = res.toString().split('\n'); 
       // });
@@ -93,8 +95,13 @@ ngAfterViewInit(): void {
   }
 }
   removeTab(index: number) {
-    this.tabs.splice(index, 1);
+     
+    this.tabs2[0].splice(index, 1);
     if(this.input)
      this.input.nativeElement.value = "";
   }
 }
+function push(name: string) {
+  throw new Error('Function not implemented.');
+}
+
