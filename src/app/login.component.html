@@ -13,12 +13,12 @@
                 <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
                     <mat-tab  *ngFor="let tab of tabs2[0]; let index = index"> 
                          <ng-template mat-tab-label>
-                           {{tab}}
+                           {{tab}}{{index}}
                             <mat-icon (click)="removeTab(index);" style="margin-left: 3px;">close</mat-icon>
                         </ng-template>
-                       <ng-container>
-                          <app-table [name]=tab ></app-table>
-                        </ng-container>  
+                       
+                          <app-table [name]=tab [byLineArray]=tabs2[1][index] ></app-table>
+                         
                     </mat-tab>
                 </mat-tab-group>
              

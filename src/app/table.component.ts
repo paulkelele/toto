@@ -1,4 +1,4 @@
-import { Component, OnInit, Input,Output } from '@angular/core';
+import { Component, OnInit, Input,Output,AfterContentInit,AfterViewInit,AfterViewChecked } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -161,7 +161,7 @@ export interface Imessages {
   styles: [
   ]
 })
-export class TableComponent implements OnInit {
+export class TableComponent implements OnInit, AfterContentInit,AfterViewInit,AfterViewChecked {
  colonnes:string[]=[
         "date",
         "sessionId",
@@ -183,7 +183,7 @@ export class TableComponent implements OnInit {
         "message"
       ] 
   
-//  @Input('byLineArray') byLineArray: string[] | undefined ;
+  @Input('byLineArray') byLineArray: string  | undefined ;
  @Input('name') name: any; 
 
 
@@ -191,6 +191,7 @@ export class TableComponent implements OnInit {
 dataSource:any;
 
  constructor(){
+    console.log("CCCC "+this.byLineArray);
     for (let index = 0; index < 18; index++) {
         const obj={
          name: this.colonnes[index].toUpperCase(),
@@ -202,15 +203,41 @@ dataSource:any;
  }
 
  ngOnInit(): void {
-    // console.log(this.byLineArray);
-    // this.tt(this.byLineArray)
+     if(this.byLineArray){
+          console.log("XXXXXXXXXXXXx ",this.byLineArray);
+        // this.byLineArray.forEach(element => {
+        //     console.log(element)
+        // });
+        // this.tt(this.byLineArray );
+     }
+       
     // this.dataSource = this.tabMessages as MatTableDataSource<Imessages>;
  }
  applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+ ngAfterContentInit(): void {
+    if(this.byLineArray){
+          console.log("XXXXXXXXXXXXx ",this.byLineArray);
+        // this.byLineArray.forEach(element => {
+        //     console.log(element)
+        // });
+        // this.tt(this.byLineArray );
+     }
+ }
+ ngAfterViewInit(): void {
+    if(this.byLineArray){
+          console.log("XXXXXXXXXXXXx ",this.byLineArray);
+        // this.byLineArray.forEach(element => {
+        //     console.log(element)
+        // });
+        // this.tt(this.byLineArray );
+     }
  
+ }
+
+
  async tt(arr:string[] | undefined ){
       await this.getTable(arr).then((res)=>{
         console.log(res);
@@ -251,6 +278,15 @@ dataSource:any;
         }
       reject(new Error('impossible de retourner la table'));
     })
+  }
+  ngAfterViewChecked(): void {
+    if(this.byLineArray){
+          console.log("XXXXXXXXXXXXx ",this.byLineArray);
+        // this.byLineArray.forEach(element => {
+        //     console.log("caaaaaaaaaaaaa ",element)
+        // });
+         this.tt(this.byLineArray.split('\n') );
+     }
   }
 
 }

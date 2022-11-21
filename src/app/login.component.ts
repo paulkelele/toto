@@ -88,9 +88,12 @@ ngAfterViewInit(): void {
       }
        this.tabs2[0].push(file.name);
        this.selected.setValue(this.tabs2[0].length - 1);
-      //  await file.text().then((res)=>{
-      //   this.byLineArray = res.toString().split('\n'); 
-      // });
+       await file.text().then((res)=>{
+        this.tabs2[1].push(res)
+        // this.byLineArray = res.toString().split('\n'); 
+        console.table(this.tabs2);
+        
+      });
     
   }
 }
