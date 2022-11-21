@@ -64,6 +64,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   
   tabMessages: Array<Imessages> = new Array<Imessages>;
   dataSource: any ;
+  byLineArray: string[] | undefined 
  
   filterValues: any = {};
   fileData:any;
@@ -107,6 +108,7 @@ ngAfterViewInit(): void {
 
 }
   async detec() {
+    this.byLineArray = [];
     let [fileHandle] = await window.showOpenFilePicker({
       multiple: false,
       id: 'foo',
@@ -119,51 +121,12 @@ ngAfterViewInit(): void {
     // quand on charge un fichier on passe directement à sa vue 
      this.selected.setValue(this.tabs.length - 1);
     let text = await this.fileData.text();
-    const byLineArray: string[] | undefined = text.toString().split('\n');
-    this.numberRows = byLineArray?.length;
-    await this.getTable(byLineArray).then((res)=>{
-        this.dataSource = res as MatTableDataSource<Imessages>;
-        console.log("exp: ",this.dataSource);
-        // this.dataSource.paginator = this.paginator;
-          // this.paginator.?_intl.itemsPerPageLabel = "Entrées par page" ;
-      })
+    this.byLineArray  = text.toString().split('\n');
+    console.log(this.tabs);
+    
   }
  
 
-  // parse table objets de types Imessages dans un MatTableDataSource
- private getTable(tab: string[] | undefined): Promise<MatTableDataSource<Imessages>> {
-    return new Promise((resolve, reject)=>{
-      if(tab){
-         this.tabMessages = [];
-          tab.forEach(element => {
-            let mes = {} as Imessages;
-            let e: string[] = element.split('|');
-            mes.date = e[0];
-            mes.sessionId = e[1]
-            mes.id = e[2];
-            mes.parent_id = e[3];
-            mes.nb_sub_records = e[4];
-            mes.configuration_name = e[5];
-            mes.server_name = e[6];
-            mes.user_name = e[7];
-            mes.module = e[8];
-            mes.sub_module = e[9];
-            mes.object_type = e[10];
-            mes.object_name = e[11];
-            mes.field_name = e[12];
-            mes.old_value = e[13];
-            mes.new_value = e[14];
-            mes.action_type = e[15];
-            mes.status = e[16];
-            mes.message = e[17];
-            this.tabMessages = [...this.tabMessages, mes];
-          });
-          console.log(this.tabMessages);
-         resolve(new MatTableDataSource(this.tabMessages))
-        }
-      reject(new Error('impossible de retourner la table'));
-    })
-  }
 
   removeTab(index: number) {
     this.tabs.splice(index, 1);

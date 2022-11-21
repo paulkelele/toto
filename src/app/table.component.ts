@@ -1,11 +1,32 @@
-import { Component, Input,Output } from '@angular/core';
+import { Component, OnInit, Input,Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { materialModules } from './material';
+import { MatTableDataSource } from '@angular/material/table';
 
+export interface Imessages {
+    date:string,
+    sessionId:string,
+    id:string,
+    parent_id:string,
+    nb_sub_records:string,
+    configuration_name:string,
+    server_name:string,
+    user_name:string,
+    module:string,
+    sub_module:string,
+    object_type:string,
+    object_name:string,
+    field_name:string,
+    old_value:string,
+    new_value:string,
+    action_type:string,
+    status:string,
+    message:string
+}
 @Component({
   selector: 'app-table',
   standalone: true,
@@ -139,7 +160,7 @@ import { materialModules } from './material';
   styles: [
   ]
 })
-export class TableComponent {
+export class TableComponent implements OnInit {
  colonnes:string[]=[
         "date",
         "sessionId",
@@ -160,23 +181,74 @@ export class TableComponent {
         "status",
         "message"
       ] 
- @Input('dataSource') dataSource: any;
+  
+ @Input('byLineArray') byLineArray: string[] | undefined ;
   
  filterSelectObj: any[] = [];
+dataSource:any;
 
  constructor(){
+    
     for (let index = 0; index < 18; index++) {
         const obj={
          name: this.colonnes[index].toUpperCase(),
          columnProp: this.colonnes[index],
          options: []
        }
-       this.filterSelectObj=[...this.filterSelectObj,obj]
+       this.filterSelectObj=[...this.filterSelectObj,obj];
      }
-    console.log("const:  ",this.dataSource);
+    
+ }
+
+ ngOnInit(): void {
+    console.log(this.byLineArray);
+    this.tt(this.byLineArray)
+    // this.dataSource = this.tabMessages as MatTableDataSource<Imessages>;
  }
  applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+ 
+ async tt(arr:string[] | undefined ){
+      await this.getTable(arr).then((res)=>{
+        this.dataSource = new MatTableDataSource(res as Imessages[]);
+    })
+ }
+
+    getTable(tab: string[] | undefined): Promise<Imessages[]> {
+    return new Promise((resolve, reject)=>{
+      if(tab){
+        let tabMessages:any = [];
+          tab.forEach(element => {
+            let mes = {} as Imessages;
+            let e: string[] = element.split('|');
+            mes.date = e[0];
+            mes.sessionId = e[1]
+            mes.id = e[2];
+            mes.parent_id = e[3];
+            mes.nb_sub_records = e[4];
+            mes.configuration_name = e[5];
+            mes.server_name = e[6];
+            mes.user_name = e[7];
+            mes.module = e[8];
+            mes.sub_module = e[9];
+            mes.object_type = e[10];
+            mes.object_name = e[11];
+            mes.field_name = e[12];
+            mes.old_value = e[13];
+            mes.new_value = e[14];
+            mes.action_type = e[15];
+            mes.status = e[16];
+            mes.message = e[17];
+             tabMessages = [...tabMessages, mes];
+          });
+          console.log(tabMessages);
+         resolve(tabMessages)
+        }
+      reject(new Error('impossible de retourner la table'));
+    })
+  }
+
 }
+ 
