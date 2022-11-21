@@ -12,10 +12,9 @@
                     fichier de log</button> </div>
 
             <div *ngIf="tabMessages.length>0">
-                <mat-tab-group>
-                    <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab">
-                                <app-table [dataSource]="dataSource"  [colonnes]="colonnes">
-                        </app-table>
+                <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
+                    <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab+' X'" >
+                                <app-table [dataSource]="dataSource"   ></app-table>
                     </mat-tab>
                 </mat-tab-group>
             </div>

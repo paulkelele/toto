@@ -61,52 +61,25 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   tabs:string[]=[];
   selected = new FormControl(0);
-  colonnes:string[]=[
-    "date",
-    "sessionId",
-    "id",
-    "parent_id",
-    "nb_sub_records",
-    "configuration_name",
-    "server_name",
-    "user_name",
-    "module",
-    "sub_module",
-    "object_type",
-    "object_name",
-    "field_name",
-    "old_value",
-    "new_value",
-    "action_type",
-    "status",
-    "message"
-  ]
+  
   tabMessages: Array<Imessages> = new Array<Imessages>;
   dataSource: any ;
-  filterSelectObj: any[] = [];
-  project_dir: any = "";
+ 
   filterValues: any = {};
   fileData:any;
   numberRows:number |undefined ;
 
-  @ViewChild(MatPaginator, {static: false})
-  set paginator(value: MatPaginator | undefined) {
-    this.dataSource.paginator = value;
-  }
-  @ViewChild(MatSort, {static: false}) 
-  set sort(value: MatSort | undefined) { 
-    this.dataSource.sort = value
-  };
+  // @ViewChild(MatPaginator, {static: false})
+  // set paginator(value: MatPaginator | undefined) {
+  //   this.dataSource.paginator = value;
+  // }
+  // @ViewChild(MatSort, {static: false}) 
+  // set sort(value: MatSort | undefined) { 
+  //   this.dataSource.sort = value
+  // };
 
   constructor() {
-    for (let index = 0; index < 18; index++) {
-       const obj={
-        name: this.colonnes[index].toUpperCase(),
-        columnProp: this.colonnes[index],
-        options: []
-      }
-      this.filterSelectObj=[...this.filterSelectObj,obj]
-    }
+   
   }
 
   ngOnInit(): void {
@@ -115,19 +88,19 @@ export class LoginComponent implements OnInit, AfterViewInit {
  
   
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-    // if (this.dataSource.paginator) {
-    //   this.dataSource.paginator.firstPage();
-    // }
-  }
+  // applyFilter(event: Event) {
+  //   const filterValue = (event.target as HTMLInputElement).value;
+  //   this.dataSource.filter = filterValue.trim().toLowerCase();
+  //   // if (this.dataSource.paginator) {
+  //   //   this.dataSource.paginator.firstPage();
+  //   // }
+  // }
 
-  // Called on Filter change
-  filterChange(filter: any, event: any) {
-    this.filterValues[filter.columnProp] = event.target.value.trim().toLowerCase()
-    this.dataSource.filter = JSON.stringify(this.filterValues)
-  }
+  // // Called on Filter change
+  // filterChange(filter: any, event: any) {
+  //   this.filterValues[filter.columnProp] = event.target.value.trim().toLowerCase()
+  //   this.dataSource.filter = JSON.stringify(this.filterValues)
+  // }
 
 ngAfterViewInit(): void {
   
@@ -142,12 +115,15 @@ ngAfterViewInit(): void {
  
      this.fileData = await fileHandle.getFile();
     console.log(this.fileData);
-     this.tabs.push(this.fileData.name)
+     this.tabs.push(this.fileData.name);
+    // quand on charge un fichier on passe directement à sa vue 
+     this.selected.setValue(this.tabs.length - 1);
     let text = await this.fileData.text();
     const byLineArray: string[] | undefined = text.toString().split('\n');
     this.numberRows = byLineArray?.length;
     await this.getTable(byLineArray).then((res)=>{
         this.dataSource = res as MatTableDataSource<Imessages>;
+        console.log("exp: ",this.dataSource);
         // this.dataSource.paginator = this.paginator;
           // this.paginator.?_intl.itemsPerPageLabel = "Entrées par page" ;
       })
@@ -182,10 +158,14 @@ ngAfterViewInit(): void {
             mes.message = e[17];
             this.tabMessages = [...this.tabMessages, mes];
           });
+          console.log(this.tabMessages);
          resolve(new MatTableDataSource(this.tabMessages))
         }
       reject(new Error('impossible de retourner la table'));
     })
   }
 
+  removeTab(index: number) {
+    this.tabs.splice(index, 1);
+  }
 }

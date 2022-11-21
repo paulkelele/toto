@@ -15,6 +15,7 @@ import { materialModules } from './material';
                     <mat-label>Filter</mat-label>
                     <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
                 </mat-form-field>
+                
                 <table mat-table [dataSource]="dataSource" class="mat-elevation-z1" matSort>
                     <ng-container matColumnDef="date">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header="date"> date </th>
@@ -139,15 +140,43 @@ import { materialModules } from './material';
   ]
 })
 export class TableComponent {
+ colonnes:string[]=[
+        "date",
+        "sessionId",
+        "id",
+        "parent_id",
+        "nb_sub_records",
+        "configuration_name",
+        "server_name",
+        "user_name",
+        "module",
+        "sub_module",
+        "object_type",
+        "object_name",
+        "field_name",
+        "old_value",
+        "new_value",
+        "action_type",
+        "status",
+        "message"
+      ] 
  @Input('dataSource') dataSource: any;
   
- @Input('colonnes')colonnes:any;
+ filterSelectObj: any[] = [];
 
+ constructor(){
+    for (let index = 0; index < 18; index++) {
+        const obj={
+         name: this.colonnes[index].toUpperCase(),
+         columnProp: this.colonnes[index],
+         options: []
+       }
+       this.filterSelectObj=[...this.filterSelectObj,obj]
+     }
+    console.log("const:  ",this.dataSource);
+ }
  applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-    // if (this.dataSource.paginator) {
-    //   this.dataSource.paginator.firstPage();
-    // }
   }
 }
