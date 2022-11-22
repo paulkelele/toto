@@ -7,6 +7,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { TableComponent } from './table.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HeaderComponent } from './header.component';
 
  
 
@@ -25,7 +26,7 @@ declare const window: any;
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, materialModules, ReactiveFormsModule, FormsModule, TableComponent],
+  imports: [CommonModule,HeaderComponent, materialModules, ReactiveFormsModule, FormsModule, TableComponent],
   templateUrl:'login.component.html',
   styles: [`
 

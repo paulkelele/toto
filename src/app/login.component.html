@@ -1,4 +1,5 @@
-<!-- <input  type="file"  (change)="load($event)"  /> -->
+
+<app-header></app-header>
 <div class="scafold">
     <div style="width: 100%;"> Lorem ipsum dolor sit amet consectetur adipisicing elit.
         Tenetur consectetur aliquid voluptatum sunt neque corporis non praesentium,
@@ -15,8 +16,9 @@
                     <mat-tab  *ngFor="let tab of tabs2[0]; let index = index"> 
                          <ng-template mat-tab-label>
                            {{tab}}
-                            <mat-icon (click)="removeTab(index);" style="margin-left: 3px;">close</mat-icon>
+                          
                         </ng-template>
+                        <mat-icon (click)="removeTab(index);" style="margin-left: 3px;">close</mat-icon>
                           <app-table *ngIf="tabs2[1][index]"  [byLineArray]=tabs2[1][index]></app-table>
                     </mat-tab>
                 </mat-tab-group>
