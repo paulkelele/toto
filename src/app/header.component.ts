@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { materialModules } from './material';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+
+
 
 @Component({
   selector: 'app-header',
@@ -22,16 +24,20 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
   `,
   styles: [`
-  .example-spacer {
-  flex: 1 1 auto;
-}`
+`
   ]
 })
 export class HeaderComponent implements OnInit {
+  @HostBinding('class') className = '';
+
   toggleControl = new FormControl(false);
   constructor() { }
 
   ngOnInit(): void {
+    this.toggleControl.valueChanges.subscribe((darkMode) => {
+      const darkClassName = 'darkMode';
+      this.className = darkMode ? darkClassName : '';
+    });
   }
 
 }
