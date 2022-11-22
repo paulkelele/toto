@@ -180,7 +180,7 @@ export class TableComponent implements OnInit, AfterViewInit {
       ] 
   
   @Input('byLineArray') byLineArray: string   | undefined ;
-  @ViewChild(MatSort) sort:any;
+  @ViewChild(MatSort, {static: false}) sort!: MatSort;
   @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
 
 
@@ -199,8 +199,7 @@ dataSource:any;
  }
 
  ngOnInit(): void {
-    console.log('paginator is ', this.paginator);
-     if(this.byLineArray){
+      if(this.byLineArray){
         const arr: string[]=this.byLineArray.split('\n');
         this.tt(arr );
         
@@ -225,7 +224,6 @@ ngAfterViewInit(): void {
       await this.getTable(arr).then((res)=>{
         this.dataSource = new MatTableDataSource<Imessages>(res as Imessages[]);
         this.ref.detectChanges();
-        console.log('paginator is 2', this.paginator);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
     })
