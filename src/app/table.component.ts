@@ -182,10 +182,8 @@ export class TableComponent implements OnInit, AfterViewInit {
       ] 
   
   @Input('byLineArray') byLineArray: string   | undefined ;
-  @ViewChild(MatSort) sort: MatSort | undefined;
-  @ViewChild('scheduledOrdersPaginator') set paginator(pager:MatPaginator) {
-    if (pager) this.dataSource.paginator = pager;
-  }
+  @ViewChild(MatSort) sort:any;
+  @ViewChild(MatPaginator, {static: false}) paginator: any
 
 
  filterSelectObj: any[] = [];
