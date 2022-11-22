@@ -14,8 +14,9 @@
             </div>
             <button mat-raised-button color="primary" (click)="in.click()">choisir un fichier...</button>
             <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
-                <mat-tab style="flex-grow: unset;" *ngFor="let tab of tabs2[0]; let index = index">
+                <mat-tab *ngFor="let tab of tabs2[0]; let index = index">
                     <ng-template mat-tab-label>
+                        <mat-icon style="vertical-align: sub;">insert_drive_file</mat-icon>
                         {{tab}}  
                     </ng-template>
                         <mat-icon (click)="removeTab(index)" style="margin-left: 3px;">close</mat-icon>

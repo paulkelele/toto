@@ -31,7 +31,7 @@ export interface Imessages {
   imports: [CommonModule, materialModules],
   template: `
   <mat-form-field>
-                <mat-label>Filter</mat-label>
+                <mat-label>Filtre</mat-label>
                 <input matInput (keyup)="applyFilter($event)" #input>
                 </mat-form-field>
                   <table mat-table [dataSource]="dataSource" class="mat-elevation-z1" matSort>

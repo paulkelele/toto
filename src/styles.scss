@@ -55,7 +55,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .example-spacer {
   flex: 1 1 auto;
 }
-
+.mat-mdc-tab {
+  flex-grow: unset !important;
+}
  
 .odd{
   color:rgb(0, 0, 0); 
