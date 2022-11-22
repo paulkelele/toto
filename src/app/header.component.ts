@@ -12,7 +12,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
   template: `
    <mat-toolbar color="primary">
     <mat-toolbar-row>
-      <span>ProcessBuilder viewLogger</span>
+      <span>ProcessBuilder Logger Visualizer</span>
       <span class="example-spacer"></span>
       <mat-slide-toggle [formControl]="toggleControl" class="mr-8">
       </mat-slide-toggle>

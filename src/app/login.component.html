@@ -13,7 +13,7 @@
                 <input hidden type="file" #in (change)="load($event)">
                  <button mat-raised-button color="primary" (click)="in.click()">choisir un fichier...</button>
             </div>
-            <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
+            <mat-tab-group  [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
                 <mat-tab *ngFor="let tab of tabs2[0]; let index = index">
                     <ng-template mat-tab-label>
                         <mat-icon style="vertical-align: sub;">insert_drive_file</mat-icon>
