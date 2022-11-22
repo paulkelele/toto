@@ -1,4 +1,4 @@
-import { Component, OnInit, Input,Output,AfterContentInit,AfterViewInit,AfterViewChecked } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -36,9 +36,7 @@ export interface Imessages {
                     <mat-label>Filter</mat-label>
                     <input matInput (keyup)="applyFilter($event)"   #input>
                 </mat-form-field>
-                <div>{{name}}</div>
-                <div>{{byLineArray}}</div>
-                <table mat-table [dataSource]="dataSource" class="mat-elevation-z1" matSort>
+                  <table mat-table [dataSource]="dataSource" class="mat-elevation-z1" matSort>
                     <ng-container matColumnDef="date">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header="date"> date </th>
                         <td mat-cell *matCellDef="let element"> {{element.date}} </td>
@@ -162,7 +160,7 @@ export interface Imessages {
   styles: [
   ]
 })
-export class TableComponent implements OnInit, AfterContentInit,AfterViewInit,AfterViewChecked {
+export class TableComponent implements OnInit {
  colonnes:string[]=[
         "date",
         "sessionId",
@@ -208,10 +206,11 @@ dataSource:any;
         console.log("fffffffffffffffffffffffff");
         
         console.log("XXXXXXXXXXXXx ",this.byLineArray);
+        const arr: string[]=this.byLineArray.split('\n');
          // this.byLineArray.forEach(element => {
         //     console.log(element)
         // });
-        //   this.tt(this.byLineArray );
+            this.tt(arr );
      }
        
     // this.dataSource = this.tabMessages as MatTableDataSource<Imessages>;
@@ -220,27 +219,7 @@ dataSource:any;
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
- ngAfterContentInit(): void {
-    // if(this.byLineArray){
-    //       console.log("XXXXXXXXXXXXx ",this.byLineArray);
-    //     // this.byLineArray.forEach(element => {
-    //     //     console.log(element)
-    //     // });
-    //     // this.tt(this.byLineArray );
-    //  }
- }
- ngAfterViewInit(): void {
-    // if(this.byLineArray){
-    //       console.log("XXXXXXXXXXXXx ",this.byLineArray);
-    //     // this.byLineArray.forEach(element => {
-    //     //     console.log(element)
-    //     // });
-    //     // this.tt(this.byLineArray );
-    //  }
  
- }
-
-
  async tt(arr:string[] | undefined ){
       await this.getTable(arr).then((res)=>{
         console.log(res);
@@ -282,15 +261,6 @@ dataSource:any;
       reject(new Error('impossible de retourner la table'));
     })
   }
-  ngAfterViewChecked(): void {
-    // if(this.byLineArray){
-    //       console.log("XXXXXXXXXXXXx ",this.byLineArray);
-    //     // this.byLineArray.forEach(element => {
-    //     //     console.log("caaaaaaaaaaaaa ",element)
-    //     // });
-    //     //  this.tt(this.byLineArray.split('\n') );
-    //  }
-  }
-
+  
 }
  
