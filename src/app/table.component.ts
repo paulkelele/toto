@@ -32,7 +32,7 @@ export interface Imessages {
   template: `
   <mat-form-field>
                 <mat-label>Filter</mat-label>
-                <input matInput (keyup)="applyFilter($event)"   #input>
+                <input matInput (keyup)="applyFilter($event)" #input>
                 </mat-form-field>
                   <table mat-table [dataSource]="dataSource" class="mat-elevation-z1" matSort>
                     <ng-container matColumnDef="date">
@@ -143,8 +143,6 @@ export interface Imessages {
                         <td mat-cell *matCellDef="let element"> {{element.message}} </td>
                     </ng-container>
 
-
-
                     <tr mat-header-row *matHeaderRowDef="colonnes"></tr>
                     <tr mat-row *matRowDef="let row; columns: colonnes; let i = index; let even = even; let odd=odd" [ngClass]="{ odd: odd, even: even }" ></tr>
                     <!-- Ligne affichée lorsqu'il n'y a pas de données correspondantes. -->
@@ -226,6 +224,11 @@ ngAfterViewInit(): void {
         this.ref.detectChanges();
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
+        this.dataSource.paginator._intl.firstPageLabel = "Première Page";
+        this.dataSource.paginator._intl.itemsPerPageLabel = "Objets par page:"
+        this.dataSource.paginator._intl.lastPageLabel = "Dernière page";
+        this.dataSource.paginator._intl.nextPageLabel = "Prochaine page";
+        this.dataSource.paginator._intl.previousPageLabel = "Page précédente";
     })
  }
 
