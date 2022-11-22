@@ -58,7 +58,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mat-mdc-tab {
   flex-grow: unset !important;
 }
- 
+.mat-mdc-paginator-container{
+  justify-content: flex-start !important;
+}
 .odd{
   color:rgb(0, 0, 0); 
   background-color: rgb(255, 255, 255);

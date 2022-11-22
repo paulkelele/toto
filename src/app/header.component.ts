@@ -16,9 +16,9 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
       <span class="example-spacer"></span>
       <mat-slide-toggle [formControl]="toggleControl" class="mr-8">
       </mat-slide-toggle>
-      <button mat-icon-button  aria-label="Example icon-button with menu icon">
+      <!-- <button mat-icon-button  aria-label="Example icon-button with menu icon">
         <mat-icon>menu</mat-icon>
-      </button>
+      </button> -->
     </mat-toolbar-row>
    </mat-toolbar>
 
