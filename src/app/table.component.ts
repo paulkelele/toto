@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -154,13 +154,12 @@ export interface Imessages {
                         <td class="mat-cell" colspan="4">Aucune donnée correspondant au filtre "{{input.value}}"</td>
                     </tr>
                 </table>
-               
-                <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+               <mat-paginator #scheduledOrdersPaginator [pageSize]="1" showFirstLastButtons [pageSizeOptions]="[1, 5, 10, 25, 100]"></mat-paginator>
   `,
   styles: [
   ]
 })
-export class TableComponent implements OnInit {
+export class TableComponent implements OnInit, AfterViewInit {
  colonnes:string[]=[
         "date",
         "sessionId",
@@ -184,15 +183,16 @@ export class TableComponent implements OnInit {
   
   @Input('byLineArray') byLineArray: string   | undefined ;
   @ViewChild(MatSort) sort: MatSort | undefined;
-  @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
+  @ViewChild('scheduledOrdersPaginator') set paginator(pager:MatPaginator) {
+    if (pager) this.dataSource.paginator = pager;
+  }
 
 
  filterSelectObj: any[] = [];
 dataSource:any;
 
  constructor(){
-    console.log("CCCC "+this.byLineArray);
-    for (let index = 0; index < 18; index++) {
+    for (let index = 0; index < this.colonnes.length; index++) {
         const obj={
          name: this.colonnes[index].toUpperCase(),
          columnProp: this.colonnes[index],
@@ -204,29 +204,31 @@ dataSource:any;
 
  ngOnInit(): void {
      if(this.byLineArray){
-        console.log("fffffffffffffffffffffffff");
-        
-        console.log("XXXXXXXXXXXXx ",this.byLineArray);
         const arr: string[]=this.byLineArray.split('\n');
-         // this.byLineArray.forEach(element => {
-        //     console.log(element)
-        // });
-            this.tt(arr );
+        this.tt(arr );
+        
      }
-       
-    // this.dataSource = this.tabMessages as MatTableDataSource<Imessages>;
  }
+
+ngAfterViewInit(): void {
+    
+}
+
  applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    // if (this.dataSource.paginator) {
+    //     this.dataSource.paginator.firstPage();
+    //   }
   }
  
+ 
+
  async tt(arr:string[] | undefined ){
       await this.getTable(arr).then((res)=>{
-        this.dataSource = new MatTableDataSource(res as Imessages[]);
+        this.dataSource = new MatTableDataSource<Imessages>(res as Imessages[]);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
-
     })
  }
 
