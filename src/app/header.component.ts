@@ -1,4 +1,4 @@
-import { Component, HostBinding, OnInit } from '@angular/core';
+import { Component, HostBinding, Output, OnInit, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { materialModules } from './material';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -29,15 +29,18 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 })
 export class HeaderComponent implements OnInit {
   @HostBinding('class') className = '';
-
+  @Output() private sendToggleControl = new EventEmitter<FormControl>();
   toggleControl = new FormControl(false);
   constructor() { }
 
   ngOnInit(): void {
     this.toggleControl.valueChanges.subscribe((darkMode) => {
+      this.sendToggleControl.emit(this.toggleControl);
       const darkClassName = 'darkMode';
       this.className = darkMode ? darkClassName : '';
     });
+    
+   
   }
 
 }

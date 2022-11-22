@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef} from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostBinding, Input} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTableDataSource } from "@angular/material/table";
@@ -7,6 +7,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { TableComponent } from './table.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HeaderComponent } from './header.component';
 
  
 
@@ -25,7 +26,7 @@ declare const window: any;
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, materialModules, ReactiveFormsModule, FormsModule, TableComponent],
+  imports: [CommonModule, HeaderComponent, materialModules, ReactiveFormsModule, FormsModule, TableComponent],
   templateUrl:'login.component.html',
   styles: [`
 
@@ -39,13 +40,15 @@ declare const window: any;
 }`
   ]
 })
-export class LoginComponent implements OnInit, AfterViewInit {
+export class LoginComponent implements OnInit {
+
+  @HostBinding('class') className = '';
   @ViewChild('in')  input: ElementRef | undefined;
   tabs:string[]=[];
   tabs2:string[][]=[[],[]];
-
+  sendToggleControl!:FormControl;
    selected = new FormControl(0);
-  
+   toggleControl = new FormControl(false);
   // tabMessages: Array<Imessages> = new Array<Imessages>;
   dataSource: any ;
   byLineArray: string[] | undefined = [];
@@ -68,10 +71,21 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    
-  }
+    // this.toggleControl.valueChanges.subscribe((darkMode) => {
+    //   console.log("Je suis appelé");
+    //   const darkClassName = 'darkMode';
+    //   this.className = darkMode ? darkClassName : '';
+    // });
+   
+   }
+   
 
-ngAfterViewInit(): void {
+sendFormContolAction($event: FormControl) {
+  $event.valueChanges.subscribe((darkMode) => {
+  console.log("Je suis appelé");
+  const darkClassName = 'darkMode';
+  this.className = darkMode ? darkClassName : '';
+});
 }
   
   async load(event: any) {
