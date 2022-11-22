@@ -1,7 +1,5 @@
 import { Component, OnInit, Input, ViewChild, AfterViewInit,ChangeDetectorRef  } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { materialModules } from './material';
@@ -154,7 +152,7 @@ export interface Imessages {
                         <td class="mat-cell" colspan="4">Aucune donnée correspondant au filtre "{{input.value}}"</td>
                     </tr>
                 </table>
-               <mat-paginator #paginator [pageSize]="1" showFirstLastButtons [pageSizeOptions]="[1, 5, 10, 25, 100]"></mat-paginator>
+               <mat-paginator #paginator [pageSize]="5" showFirstLastButtons [pageSizeOptions]="[1, 5, 10, 25, 100]"></mat-paginator>
   `,
   styles: [
   ]
