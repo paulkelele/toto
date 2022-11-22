@@ -9,17 +9,17 @@
         <div style="width: 5%;"> </div>
         <div style="width: 95%;">
             <div style="margin-bottom:5px;"> 
-                <input type="file" #in (change)="load($event)"></div>
+                <input hidden type="file" #in (change)="load($event)"></div>
+                <button mat-raised-button  color="primary" (click)="in.click()">choisir un fichier...</button>
                 <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
                     <mat-tab  *ngFor="let tab of tabs2[0]; let index = index"> 
                          <ng-template mat-tab-label>
                            {{tab}}
                             <mat-icon (click)="removeTab(index);" style="margin-left: 3px;">close</mat-icon>
                         </ng-template>
-                          <app-table *ngIf="tabs2[1][index]"  [byLineArray]=tabs2[1][index] ></app-table>
+                          <app-table *ngIf="tabs2[1][index]"  [byLineArray]=tabs2[1][index]></app-table>
                     </mat-tab>
                 </mat-tab-group>
-             
         </div>
     </div>
 </div>

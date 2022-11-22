@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, AfterViewInit,ChangeDetectorRef  } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -33,8 +33,8 @@ export interface Imessages {
   imports: [CommonModule, materialModules],
   template: `
   <mat-form-field>
-                    <mat-label>Filter</mat-label>
-                    <input matInput (keyup)="applyFilter($event)"   #input>
+                <mat-label>Filter</mat-label>
+                <input matInput (keyup)="applyFilter($event)"   #input>
                 </mat-form-field>
                   <table mat-table [dataSource]="dataSource" class="mat-elevation-z1" matSort>
                     <ng-container matColumnDef="date">
@@ -148,13 +148,13 @@ export interface Imessages {
 
 
                     <tr mat-header-row *matHeaderRowDef="colonnes"></tr>
-                    <tr mat-row *matRowDef="let row; columns: colonnes;"></tr>
+                    <tr mat-row *matRowDef="let row; columns: colonnes; let i = index; let even = even; let odd=odd" [ngClass]="{ odd: odd, even: even }" ></tr>
                     <!-- Ligne affichée lorsqu'il n'y a pas de données correspondantes. -->
                     <tr class="mat-row" *matNoDataRow>
                         <td class="mat-cell" colspan="4">Aucune donnée correspondant au filtre "{{input.value}}"</td>
                     </tr>
                 </table>
-               <mat-paginator #scheduledOrdersPaginator [pageSize]="1" showFirstLastButtons [pageSizeOptions]="[1, 5, 10, 25, 100]"></mat-paginator>
+               <mat-paginator #paginator [pageSize]="1" showFirstLastButtons [pageSizeOptions]="[1, 5, 10, 25, 100]"></mat-paginator>
   `,
   styles: [
   ]
@@ -183,13 +183,13 @@ export class TableComponent implements OnInit, AfterViewInit {
   
   @Input('byLineArray') byLineArray: string   | undefined ;
   @ViewChild(MatSort) sort:any;
-  @ViewChild(MatPaginator, {static: false}) paginator: any
+  @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
 
 
  filterSelectObj: any[] = [];
 dataSource:any;
 
- constructor(){
+ constructor(private ref: ChangeDetectorRef ){
     for (let index = 0; index < this.colonnes.length; index++) {
         const obj={
          name: this.colonnes[index].toUpperCase(),
@@ -201,6 +201,7 @@ dataSource:any;
  }
 
  ngOnInit(): void {
+    console.log('paginator is ', this.paginator);
      if(this.byLineArray){
         const arr: string[]=this.byLineArray.split('\n');
         this.tt(arr );
@@ -215,9 +216,9 @@ ngAfterViewInit(): void {
  applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-    // if (this.dataSource.paginator) {
-    //     this.dataSource.paginator.firstPage();
-    //   }
+    if (this.dataSource.paginator) {
+        this.dataSource.paginator.firstPage();
+      }
   }
  
  
@@ -225,6 +226,8 @@ ngAfterViewInit(): void {
  async tt(arr:string[] | undefined ){
       await this.getTable(arr).then((res)=>{
         this.dataSource = new MatTableDataSource<Imessages>(res as Imessages[]);
+        this.ref.detectChanges();
+        console.log('paginator is 2', this.paginator);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
     })
@@ -233,8 +236,10 @@ ngAfterViewInit(): void {
     getTable(tab: string[] | undefined): Promise<Imessages[]> {
     return new Promise((resolve, reject)=>{
       if(tab){
+        console.log(tab);
         let tabMessages:any = [];
           tab.forEach(element => {
+            if(element){
             let mes = {} as Imessages;
             let e: string[] = element.split('|');
             mes.date = e[0];
@@ -256,6 +261,7 @@ ngAfterViewInit(): void {
             mes.status = e[16];
             mes.message = e[17];
             tabMessages = [...tabMessages, mes];
+        }
           });
           console.log(tabMessages);
          resolve(tabMessages)
