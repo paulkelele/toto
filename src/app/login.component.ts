@@ -6,6 +6,7 @@ import { materialModules } from './material';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { TableComponent } from './table.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
  
 
@@ -62,7 +63,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   //   this.dataSource.sort = value
   // };
 
-  constructor() {
+  constructor(private _snackBar: MatSnackBar) {
    
   }
 
@@ -80,7 +81,7 @@ ngAfterViewInit(): void {
     if(file){
       if (file.size === 0){
         if(this.input)this.input.nativeElement.value = "";
-        
+        this._snackBar.open("Le fichier selectionné est vide","",{duration:2000,verticalPosition:'top'});
         return;
       }
        this.tabs2[0].push(file.name);
