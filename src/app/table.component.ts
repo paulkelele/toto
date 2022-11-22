@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -183,7 +183,8 @@ export class TableComponent implements OnInit {
       ] 
   
   @Input('byLineArray') byLineArray: string   | undefined ;
- @Input('name') name: any; 
+  @ViewChild(MatSort) sort: MatSort | undefined;
+  @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
 
 
  filterSelectObj: any[] = [];
@@ -222,9 +223,10 @@ dataSource:any;
  
  async tt(arr:string[] | undefined ){
       await this.getTable(arr).then((res)=>{
-        console.log(res);
-        
         this.dataSource = new MatTableDataSource(res as Imessages[]);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+
     })
  }
 
