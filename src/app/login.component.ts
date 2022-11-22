@@ -29,7 +29,6 @@ declare const window: any;
 
 .scafold{
   padding:10px;
-  height:100%;
 }
 
 
