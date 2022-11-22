@@ -69,10 +69,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     
   }
- 
-  
-
- 
 
 ngAfterViewInit(): void {
 }
@@ -84,6 +80,7 @@ ngAfterViewInit(): void {
     if(file){
       if (file.size === 0){
         if(this.input)this.input.nativeElement.value = "";
+        
         return;
       }
        this.tabs2[0].push(file.name);
