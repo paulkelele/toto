@@ -28,7 +28,8 @@ declare const window: any;
   styles: [`
 
 .scafold{
-  padding:10px; 
+  padding:10px;
+  height:100%;
 }
 
 

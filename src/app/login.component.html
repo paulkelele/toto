@@ -1,6 +1,6 @@
 <app-header (sendToggleControl)="receiveToggleControlForDarkMode($event)"></app-header>
 
-<div class="scafold ">
+<div class="scafold mat-app-background">
     <div style="width: 100%;"> Lorem ipsum dolor sit amet consectetur adipisicing elit.
         Tenetur consectetur aliquid voluptatum sunt neque corporis non praesentium,
         officia voluptates magnam nulla, asperiores voluptas maxime quae voluptate ratione quia exercitationem
@@ -14,7 +14,7 @@
             </div>
             <button mat-raised-button color="primary" (click)="in.click()">choisir un fichier...</button>
             <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
-                <mat-tab *ngFor="let tab of tabs2[0]; let index = index">
+                <mat-tab style="flex-grow: unset;" *ngFor="let tab of tabs2[0]; let index = index">
                     <ng-template mat-tab-label>
                         {{tab}}  
                     </ng-template>

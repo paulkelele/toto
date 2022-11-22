@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
   standalone:true,
   imports:[CommonModule, RouterModule ],
   template: `
-    <router-outlet></router-outlet>
+    <router-outlet class="mat-app-background"></router-outlet>
   `,
   styles: [`
   `]
