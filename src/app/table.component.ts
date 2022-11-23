@@ -1,41 +1,45 @@
-import { Component, OnInit, Input, ViewChild, AfterViewInit,ChangeDetectorRef  } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { materialModules } from './material';
 import { MatTableDataSource } from '@angular/material/table';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 export interface Imessages {
-    date:string,
-    sessionId:string,
-    id:string,
-    parent_id:string,
-    nb_sub_records:string,
-    configuration_name:string,
-    server_name:string,
-    user_name:string,
-    module:string,
-    sub_module:string,
-    object_type:string,
-    object_name:string,
-    field_name:string,
-    old_value:string,
-    new_value:string,
-    action_type:string,
-    status:string,
-    message:string
+    date: string,
+    sessionId: string,
+    id: string,
+    parent_id: string,
+    nb_sub_records: string,
+    configuration_name: string,
+    server_name: string,
+    user_name: string,
+    module: string,
+    sub_module: string,
+    object_type: string,
+    object_name: string,
+    field_name: string,
+    old_value: string,
+    new_value: string,
+    action_type: string,
+    status: string,
+    message: string
 }
 @Component({
-  selector: 'app-table',
-  standalone: true,
-  imports: [CommonModule, materialModules],
-  template: `
-  <mat-form-field>
+    selector: 'app-table',
+    standalone: true,
+    imports: [CommonModule, materialModules],
+    template: `
+    <div style="display: flex;">
+           <mat-card-content  style="width: 20%;">
+           <mat-form-field>
                 <mat-label>Filtre</mat-label>
                 <input matInput (keyup)="applyFilter($event)" #input>
-                <span>{{maDate | date:'EEEE, d,MMMM, y HH:mm:ss'}}</span>
-                </mat-form-field>
+            </mat-form-field>
+            <div>{{maDate | date:'EEEE  d MMMM y HH:mm:ss'}}</div>
+            </mat-card-content>
+            <mat-card-content style="width: 80%;">
                   <table mat-table  [dataSource]="dataSource" class="mat-elevation-z1" matSort>
                     <ng-container matColumnDef="date">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header="date"> date </th>
@@ -151,15 +155,17 @@ export interface Imessages {
                     <tr class="mat-row" *matNoDataRow>
                         <td class="mat-cell" colspan="4">Aucune donnée correspondant au filtre "{{input.value}}"</td>
                     </tr>
-                </table>
-               <mat-paginator #paginator [pageSize]="5" showFirstLastButtons [pageSizeOptions]="[1, 5, 10, 25, 100]"></mat-paginator>
+            </table>
+            <mat-paginator #paginator [pageSize]="5" showFirstLastButtons [pageSizeOptions]="[1, 5, 10, 25, 100]"></mat-paginator>
+            </mat-card-content>
+    </div>
   `,
-  styles: [
-  ]
+    styles: [
+    ]
 })
 export class TableComponent implements OnInit, AfterViewInit {
- 
- colonnes:string[]=[
+
+    colonnes: string[] = [
         "date",
         "sessionId",
         "id",
@@ -178,102 +184,102 @@ export class TableComponent implements OnInit, AfterViewInit {
         "action_type",
         "status",
         "message"
-      ] 
-    
-  @Input('byLineArray') byLineArray: string   | undefined ;
-  @Input('lastModified') lastModified: Date   | undefined ;
-  @ViewChild(MatSort, {static: false}) sort!: MatSort;
-  @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
+    ]
+
+    @Input('byLineArray') byLineArray: string | undefined;
+    @Input('lastModified') lastModified: Date | undefined;
+    @ViewChild(MatSort, { static: false }) sort!: MatSort;
+    @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
 
- filterSelectObj: any[] = [];
-dataSource:any;
-maDate:Date | undefined;
+    filterSelectObj: any[] = [];
+    dataSource: any;
+    maDate: Date | undefined;
 
- constructor(private ref: ChangeDetectorRef ){
-    for (let index = 0; index < this.colonnes.length; index++) {
-        const obj={
-         name: this.colonnes[index].toUpperCase(),
-         columnProp: this.colonnes[index],
-         options: []
-       }
-       this.filterSelectObj=[...this.filterSelectObj,obj];
-     }
- }
+    constructor(private ref: ChangeDetectorRef) {
+        for (let index = 0; index < this.colonnes.length; index++) {
+            const obj = {
+                name: this.colonnes[index].toUpperCase(),
+                columnProp: this.colonnes[index],
+                options: []
+            }
+            this.filterSelectObj = [...this.filterSelectObj, obj];
+        }
+    }
 
- ngOnInit(): void {
-    this.maDate =  this.lastModified;
-    console.log(this.lastModified);
-    
-      if(this.byLineArray){
-        const arr: string[]=this.byLineArray.split('\n');
-        this.tt(arr );
-        
-     }
- }
+    ngOnInit(): void {
+        this.maDate = this.lastModified;
+        console.log(this.lastModified);
 
-ngAfterViewInit(): void {
-    
-}
+        if (this.byLineArray) {
+            const arr: string[] = this.byLineArray.split('\n');
+            this.tt(arr);
 
- applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-    if (this.dataSource.paginator) {
-        this.dataSource.paginator.firstPage();
-      }
-  }
- 
- 
+        }
+    }
 
- async tt(arr:string[] | undefined ){
-      await this.getTable(arr).then((res)=>{
-        this.dataSource = new MatTableDataSource<Imessages>(res as Imessages[]);
-        this.ref.detectChanges();
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.paginator._intl.firstPageLabel = "Première Page";
-        this.dataSource.paginator._intl.itemsPerPageLabel = "Objets par page:"
-        this.dataSource.paginator._intl.lastPageLabel = "Dernière page";
-        this.dataSource.paginator._intl.nextPageLabel = "Prochaine page";
-        this.dataSource.paginator._intl.previousPageLabel = "Page précédente";
-    })
- }
+    ngAfterViewInit(): void {
+
+    }
+
+    applyFilter(event: Event) {
+        const filterValue = (event.target as HTMLInputElement).value;
+        this.dataSource.filter = filterValue.trim().toLowerCase();
+        if (this.dataSource.paginator) {
+            this.dataSource.paginator.firstPage();
+        }
+    }
+
+
+
+    async tt(arr: string[] | undefined) {
+        await this.getTable(arr).then((res) => {
+            this.dataSource = new MatTableDataSource<Imessages>(res as Imessages[]);
+            this.ref.detectChanges();
+            this.dataSource.sort = this.sort;
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.paginator._intl.firstPageLabel = "Première Page";
+            this.dataSource.paginator._intl.itemsPerPageLabel = "Objets par page:"
+            this.dataSource.paginator._intl.lastPageLabel = "Dernière page";
+            this.dataSource.paginator._intl.nextPageLabel = "Prochaine page";
+            this.dataSource.paginator._intl.previousPageLabel = "Page précédente";
+        })
+    }
 
     getTable(tab: string[] | undefined): Promise<Imessages[]> {
-    return new Promise((resolve, reject)=>{
-      if(tab){
-         let tabMessages:any = [];
-          tab.forEach(element => {
-            if(element){
-            let mes = {} as Imessages;
-            let e: string[] = element.split('|');
-            mes.date = e[0];
-            mes.sessionId = e[1]
-            mes.id = e[2];
-            mes.parent_id = e[3];
-            mes.nb_sub_records = e[4];
-            mes.configuration_name = e[5];
-            mes.server_name = e[6];
-            mes.user_name = e[7];
-            mes.module = e[8];
-            mes.sub_module = e[9];
-            mes.object_type = e[10];
-            mes.object_name = e[11];
-            mes.field_name = e[12];
-            mes.old_value = e[13];
-            mes.new_value = e[14];
-            mes.action_type = e[15];
-            mes.status = e[16];
-            mes.message = e[17];
-            tabMessages = [...tabMessages, mes];
-        }
-          });
-          resolve(tabMessages)
-        }
-      reject(new Error('impossible de retourner la table'));
-    })
-  }
-  
+        return new Promise((resolve, reject) => {
+            if (tab) {
+                let tabMessages: any = [];
+                tab.forEach(element => {
+                    if (element) {
+                        let mes = {} as Imessages;
+                        let e: string[] = element.split('|');
+                        mes.date = e[0];
+                        mes.sessionId = e[1]
+                        mes.id = e[2];
+                        mes.parent_id = e[3];
+                        mes.nb_sub_records = e[4];
+                        mes.configuration_name = e[5];
+                        mes.server_name = e[6];
+                        mes.user_name = e[7];
+                        mes.module = e[8];
+                        mes.sub_module = e[9];
+                        mes.object_type = e[10];
+                        mes.object_name = e[11];
+                        mes.field_name = e[12];
+                        mes.old_value = e[13];
+                        mes.new_value = e[14];
+                        mes.action_type = e[15];
+                        mes.status = e[16];
+                        mes.message = e[17];
+                        tabMessages = [...tabMessages, mes];
+                    }
+                });
+                resolve(tabMessages)
+            }
+            reject(new Error('impossible de retourner la table'));
+        })
+    }
+
 }
- 
+
