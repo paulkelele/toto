@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { materialModules } from './material';
 import { MatTableDataSource } from '@angular/material/table';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 export interface Imessages {
     date:string,
@@ -33,8 +34,9 @@ export interface Imessages {
   <mat-form-field>
                 <mat-label>Filtre</mat-label>
                 <input matInput (keyup)="applyFilter($event)" #input>
+                <span>{{maDate | date:'EEEE, d,MMMM, y'   }}</span>
                 </mat-form-field>
-                  <table mat-table [dataSource]="dataSource" class="mat-elevation-z1" matSort>
+                  <table mat-table  [dataSource]="dataSource" class="mat-elevation-z1" matSort>
                     <ng-container matColumnDef="date">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header="date"> date </th>
                         <td mat-cell *matCellDef="let element"> {{element.date}} </td>
@@ -156,6 +158,7 @@ export interface Imessages {
   ]
 })
 export class TableComponent implements OnInit, AfterViewInit {
+ 
  colonnes:string[]=[
         "date",
         "sessionId",
@@ -176,14 +179,16 @@ export class TableComponent implements OnInit, AfterViewInit {
         "status",
         "message"
       ] 
-  
+    
   @Input('byLineArray') byLineArray: string   | undefined ;
+  @Input('lastModified') lastModified: Date   | undefined ;
   @ViewChild(MatSort, {static: false}) sort!: MatSort;
   @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
 
 
  filterSelectObj: any[] = [];
 dataSource:any;
+maDate:Date | undefined;
 
  constructor(private ref: ChangeDetectorRef ){
     for (let index = 0; index < this.colonnes.length; index++) {
@@ -197,6 +202,9 @@ dataSource:any;
  }
 
  ngOnInit(): void {
+    this.maDate =  this.lastModified;
+    console.log(this.lastModified);
+    
       if(this.byLineArray){
         const arr: string[]=this.byLineArray.split('\n');
         this.tt(arr );
