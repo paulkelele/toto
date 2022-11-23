@@ -4,7 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { materialModules } from './material';
 import { MatTableDataSource } from '@angular/material/table';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { FormsModule } from '@angular/forms';
 
 export interface Imessages {
     date: string,
@@ -29,7 +29,7 @@ export interface Imessages {
 @Component({
     selector: 'app-table',
     standalone: true,
-    imports: [CommonModule, materialModules],
+    imports: [CommonModule, materialModules, FormsModule],
     template: `
     <div style="display: flex;">
            <mat-card-content  class="matcardpanelleft">
@@ -37,10 +37,11 @@ export interface Imessages {
                     <mat-label>Filtre</mat-label>
                     <input matInput (keyup)="applyFilter($event)" #input>
                 </mat-form-field>
+              <mat-divider></mat-divider>
                 <mat-card-title>Last modification</mat-card-title>
                  <mat-card-subtitle style=" font-size: 0.92vw;">{{maDate | date:'EEEE  d MMMM y HH:mm:ss'}}</mat-card-subtitle>
                  <mat-divider></mat-divider>
-                 <button mat-button color="primary" (click)="callFunction()">close</button>
+                 <button style="margin-top: 5px;" mat-button color="primary" (click)="callFunction()">fermer</button>
                 <!-- <div style="width: 100%; font-size: 0.92vw;">{{maDate | date:'EEEE  d MMMM y HH:mm:ss'}}</div> -->
             </mat-card-content>
             <mat-card-content style="width: 85%; overflow-x:auto">
@@ -203,7 +204,7 @@ export class TableComponent implements OnInit {
     dataSource: any;
     maDate: Date | undefined;
     uniqueIndex:number | undefined;
-
+ 
     constructor(private ref: ChangeDetectorRef) {
         for (let index = 0; index < this.colonnes.length; index++) {
             const obj = {
@@ -213,21 +214,32 @@ export class TableComponent implements OnInit {
             }
             this.filterSelectObj = [...this.filterSelectObj, obj];
         }
+       
     }
 
     ngOnInit(): void {
-        console.log(this.index);
+       
         this.uniqueIndex = this.index;
         this.maDate = this.lastModified;
-        console.log(this.lastModified);
-
-        if (this.byLineArray) {
+       if (this.byLineArray) {
             const arr: string[] = this.byLineArray.split('\n');
-            this.tt(arr);
-
+            this.tt(arr).then(()=>{
+               this.dataSource.filterPredicate =  (data:any,filter:string):boolean =>{
+                console.log(data, filter);
+                return true
+               }
+                
+            });
         }
+       
+        
+        // this.dataSource.filterPredicate = function(data:any, filter: string): boolean {
+        //     console.log(data);
+            
+        //     return data.configuration_name.toLowerCase().includes(filter) || data.configuration_name.toLowerCase().includes(filter);
+        //   };
     }
-
+// https://stackblitz.com/edit/angular-filter-predicate?file=app%2Ftable-filtering-example.ts
     callFunction() {
         this.clickFunctionCalled.emit(this);   
       }

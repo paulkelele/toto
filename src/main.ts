@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { LOCALE_ID } from '@angular/core';
 import localeFr from '@angular/common/locales/fr';
 import { registerLocaleData } from '@angular/common';
+import { MAT_RADIO_DEFAULT_OPTIONS } from '@angular/material/radio';
 registerLocaleData(localeFr);
 
 if (environment.production) {
@@ -24,7 +25,8 @@ bootstrapApplication(AppComponent,{
       RouterModule.forRoot(routes,{useHash:true}), 
       BrowserAnimationsModule,
       HttpClientModule),
-      { provide: LOCALE_ID, useValue: "fr-FR" }
+      { provide: LOCALE_ID, useValue: "fr-FR" },
+      {provide: MAT_RADIO_DEFAULT_OPTIONS, useValue: { color: 'primary' }}
     ]
 })
 

@@ -67,6 +67,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mat-mdc-paginator-container{
   justify-content: flex-start !important;
 }
+.mat-mdc-form-field-bottom-align{
+  display: none !important;
+}
 .paginator{
   width: fit-content;
   float: left;

@@ -86,12 +86,10 @@ export class LoginComponent {
     async load(event: any) {
     this.byLineArray = [];
       const file:File = event.target.files[0];
-      console.log(file);
-      
-      if(file){
+     if(file){
         if (file.size === 0){
           if(this.input)this.input.nativeElement.value = "";
-          this._snackBar.open("Le fichier selectionné est vide","",{duration:2000,verticalPosition:'top'});
+          this._snackBar.open("Le fichier selectionné est vide","",{duration:2000,verticalPosition:'bottom'});
           return;
         }
          this.tabs2[0].push(file.name);
