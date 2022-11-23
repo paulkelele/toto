@@ -235,8 +235,7 @@ ngAfterViewInit(): void {
     getTable(tab: string[] | undefined): Promise<Imessages[]> {
     return new Promise((resolve, reject)=>{
       if(tab){
-        console.log(tab);
-        let tabMessages:any = [];
+         let tabMessages:any = [];
           tab.forEach(element => {
             if(element){
             let mes = {} as Imessages;
@@ -262,8 +261,7 @@ ngAfterViewInit(): void {
             tabMessages = [...tabMessages, mes];
         }
           });
-          console.log(tabMessages);
-         resolve(tabMessages)
+          resolve(tabMessages)
         }
       reject(new Error('impossible de retourner la table'));
     })

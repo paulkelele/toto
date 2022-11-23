@@ -10,8 +10,8 @@
         <div style="width: 0%;"> </div>
         <div style="width: 100%;">
             <div style="margin-bottom:5px;">
-                <input hidden type="file" #in (change)="load($event)">
-                 <button mat-raised-button color="primary" (click)="in.click()">choisir un fichier...</button>
+                <!-- <input   type="file" #in (change)="chargmentFichier()"> -->
+            <button mat-raised-button color="primary" (click)="chargmentFichier()">load logger...</button> 
             </div>
             <mat-tab-group  [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
                 <mat-tab *ngFor="let tab of tabs2[0]; let index = index">
@@ -19,7 +19,7 @@
                         <mat-icon style="vertical-align: sub;">insert_drive_file</mat-icon>
                         {{tab}}  
                     </ng-template>
-                       <div> <mat-icon (click)="removeTab(index)" style="margin-left: 3px;">close</mat-icon></div>
+                       <div> <button mat-raised-button color="primary" (click)="removeTab(index)" style="margin-left: 3px;">close</button></div>
                     <app-table *ngIf="tabs2[1][index]" [byLineArray]=tabs2[1][index]></app-table>
                 </mat-tab>
             </mat-tab-group>
