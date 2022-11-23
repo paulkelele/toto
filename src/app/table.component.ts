@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild,  ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -32,14 +32,18 @@ export interface Imessages {
     imports: [CommonModule, materialModules],
     template: `
     <div style="display: flex;">
-           <mat-card-content  style="width: 20%;">
-           <mat-form-field>
-                <mat-label>Filtre</mat-label>
-                <input matInput (keyup)="applyFilter($event)" #input>
-            </mat-form-field>
-            <div>{{maDate | date:'EEEE  d MMMM y HH:mm:ss'}}</div>
+           <mat-card-content  class="matcardpanelleft">
+                <mat-form-field>
+                    <mat-label>Filtre</mat-label>
+                    <input matInput (keyup)="applyFilter($event)" #input>
+                </mat-form-field>
+                <mat-card-title>Last modification</mat-card-title>
+                 <mat-card-subtitle style=" font-size: 0.92vw;">{{maDate | date:'EEEE  d MMMM y HH:mm:ss'}}</mat-card-subtitle>
+                 <mat-divider></mat-divider>
+                 <button mat-button color="primary" (click)="callFunction()">close</button>
+                <!-- <div style="width: 100%; font-size: 0.92vw;">{{maDate | date:'EEEE  d MMMM y HH:mm:ss'}}</div> -->
             </mat-card-content>
-            <mat-card-content style="width: 80%;">
+            <mat-card-content style="width: 85%; overflow-x:auto">
                   <table mat-table  [dataSource]="dataSource" class="mat-elevation-z1" matSort>
                     <ng-container matColumnDef="date">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header="date"> date </th>
@@ -156,14 +160,14 @@ export interface Imessages {
                         <td class="mat-cell" colspan="4">Aucune donnée correspondant au filtre "{{input.value}}"</td>
                     </tr>
             </table>
-            <mat-paginator #paginator [pageSize]="5" showFirstLastButtons [pageSizeOptions]="[1, 5, 10, 25, 100]"></mat-paginator>
-            </mat-card-content>
+            <mat-paginator class="paginator" #paginator [pageSize]="5" showFirstLastButtons [pageSizeOptions]="[1, 5, 10, 25, 100]"></mat-paginator>
+        </mat-card-content>
     </div>
   `,
     styles: [
     ]
 })
-export class TableComponent implements OnInit, AfterViewInit {
+export class TableComponent implements OnInit {
 
     colonnes: string[] = [
         "date",
@@ -187,7 +191,10 @@ export class TableComponent implements OnInit, AfterViewInit {
     ]
 
     @Input('byLineArray') byLineArray: string | undefined;
-    @Input('lastModified') lastModified: Date | undefined;
+    @Input('lastModified') lastModified: Date | undefined;    
+    @Input('index') index: number | undefined;
+
+    @Output() clickFunctionCalled = new EventEmitter<any>();
     @ViewChild(MatSort, { static: false }) sort!: MatSort;
     @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
@@ -195,6 +202,7 @@ export class TableComponent implements OnInit, AfterViewInit {
     filterSelectObj: any[] = [];
     dataSource: any;
     maDate: Date | undefined;
+    uniqueIndex:number | undefined;
 
     constructor(private ref: ChangeDetectorRef) {
         for (let index = 0; index < this.colonnes.length; index++) {
@@ -208,6 +216,8 @@ export class TableComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit(): void {
+        console.log(this.index);
+        this.uniqueIndex = this.index;
         this.maDate = this.lastModified;
         console.log(this.lastModified);
 
@@ -218,10 +228,10 @@ export class TableComponent implements OnInit, AfterViewInit {
         }
     }
 
-    ngAfterViewInit(): void {
-
-    }
-
+    callFunction() {
+        this.clickFunctionCalled.emit(this);   
+      }
+      
     applyFilter(event: Event) {
         const filterValue = (event.target as HTMLInputElement).value;
         this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -239,7 +249,7 @@ export class TableComponent implements OnInit, AfterViewInit {
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
             this.dataSource.paginator._intl.firstPageLabel = "Première Page";
-            this.dataSource.paginator._intl.itemsPerPageLabel = "Objets par page:"
+            this.dataSource.paginator._intl.itemsPerPageLabel = "Lignes par page:"
             this.dataSource.paginator._intl.lastPageLabel = "Dernière page";
             this.dataSource.paginator._intl.nextPageLabel = "Prochaine page";
             this.dataSource.paginator._intl.previousPageLabel = "Page précédente";

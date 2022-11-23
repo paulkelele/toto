@@ -104,8 +104,17 @@ export class LoginComponent {
   }
 
   removeTab(index: number) {
-    this.tabs2[0].splice(index, 1);
+     this.tabs2[0].splice(index, 1);
     this.tabs2[1].splice(index, 1);
+    if (this.input)
+      this.input.nativeElement.value = "";
+  }
+
+  
+
+  removeAllTabs() {
+    this.tabs2[0]=[];
+    this.tabs2[1]=[];
     if (this.input)
       this.input.nativeElement.value = "";
   }

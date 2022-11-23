@@ -11,20 +11,22 @@
         <div style="width: 100%;">
             <div style="margin-bottom:5px;">
                 <input hidden type="file" #in (change)="load($event)">
-                <button mat-raised-button color="primary" (click)="in.click()">choisir un fichier...</button>
-           
+                <button mat-flat-button   (click)="in.click()">choisir un fichier...</button>
+           <div class="button-row" style="float:right">
+                <button mat-flat-button (click)=" removeAllTabs( )">All del</button>
+              </div>
             </div>
+            
             <mat-tab-group  [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
-                <mat-tab *ngFor="let tab of tabs2[0]; let index = index">
-                    <ng-template mat-tab-label>
+                <mat-tab   *ngFor="let tab of tabs2[0]; let index = index">
+                    <ng-template  mat-tab-label>
                         <mat-icon style="vertical-align: sub;">insert_drive_file</mat-icon>
                         {{tab}}  
                     </ng-template>
-                       <mat-card style="flex-direction: row;"> 
+                       <!-- <mat-card style="flex-direction: row;"> 
                         <button mat-button color="primary" (click)="removeTab(index)" style="margin-left: 10px; width: fit-content;">close</button>
-                         
-                        </mat-card>
-                    <app-table *ngIf="tabs2[1][index]" [lastModified]="date" [byLineArray]=tabs2[1][index]></app-table>
+                        </mat-card> -->
+                    <app-table  (clickFunctionCalled)="removeTab($event.index)"  *ngIf="tabs2[1][index]" [index]=index [lastModified]="date" [byLineArray]=tabs2[1][index]></app-table>
                 </mat-tab>
             </mat-tab-group>
         </div>

@@ -18,7 +18,7 @@ $angular-primary: mat.define-palette(mat.$teal-palette, 300, 100, 900);
 $angular-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
 $angular-warn: mat.define-palette(mat.$red-palette);
 
-$angular-primary-dark: mat.define-palette(mat.$red-palette, 500, 100, 900);
+$angular-primary-dark: mat.define-palette(mat.$pink-palette, 200, 100, 900);
 $angular-accent-dark: mat.define-palette(mat.$pink-palette, A200, A100, A400);
 $angular-warn-dark: mat.define-palette(mat.$red-palette);
 
@@ -55,11 +55,22 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .example-spacer {
   flex: 1 1 auto;
 }
+.matcardpanelleft{
+  width: 15%; padding-top: 0px; display: flex; flex-direction: column;
+}
+.mat-mdc-tab-label-container {
+  margin-bottom: 10px;
+}
 .mat-mdc-tab {
   flex-grow: unset !important;
 }
 .mat-mdc-paginator-container{
   justify-content: flex-start !important;
+}
+.paginator{
+  width: fit-content;
+  float: left;
+  margin-top: 3px;
 }
 .odd{
   color:rgb(0, 0, 0); 
