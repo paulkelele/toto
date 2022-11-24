@@ -10,8 +10,9 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, materialModules, ReactiveFormsModule ],
   template: `
-   <mat-toolbar color="primary">
+    <mat-toolbar color="primary">
     <mat-toolbar-row>
+    <mat-icon class="material-icons-outlined" style="vertical-align: sub;margin-right:10px">remove_red_eye</mat-icon>
       <span>Log Visualizer</span>
       <span class="example-spacer"></span>
       <mat-slide-toggle [formControl]="toggleControl" class="mr-8">
