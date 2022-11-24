@@ -224,10 +224,10 @@ export class TableComponent implements OnInit {
        if (this.byLineArray) {
             const arr: string[] = this.byLineArray.split('\n');
             this.tt(arr).then(()=>{
-               this.dataSource.filterPredicate =  (data:any,filter:string):boolean =>{
-                console.log(data, filter);
-                return true
-               }
+            //    this.dataSource.filterPredicate =  (data:any,filter:string):boolean =>{
+            //     console.log(data, filter);
+            //     return true
+            //    }
                 
             });
         }
