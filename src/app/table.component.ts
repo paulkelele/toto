@@ -32,7 +32,7 @@ export interface Imessages {
     imports: [CommonModule, materialModules, FormsModule],
     template: `
     <div style="display: flex;">
-           <mat-card-content  class="matcardpanelleft">
+           <mat-card-content  class="matcardpanelleft mat-app-background">
                 <mat-form-field>
                     <mat-label>Filtre</mat-label>
                     <input matInput (keyup)="applyFilter($event)" #input>
@@ -44,7 +44,7 @@ export interface Imessages {
                  <button style="margin-top: 5px;" mat-button color="primary" (click)="callFunction()">fermer</button>
                 <!-- <div style="width: 100%; font-size: 0.92vw;">{{maDate | date:'EEEE  d MMMM y HH:mm:ss'}}</div> -->
             </mat-card-content>
-            <mat-card-content style="width: 85%; overflow-x:auto">
+            <mat-card-content style="width: 85%; overflow-x:auto" class="mat-app-background">
                   <table mat-table  [dataSource]="dataSource" class="mat-elevation-z1" matSort>
                     <ng-container matColumnDef="date">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header="date"> date </th>
